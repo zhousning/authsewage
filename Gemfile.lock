@@ -56,6 +56,9 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
+    aliyunsdkcore (0.0.17)
+      activesupport (>= 3.0.0)
+      faraday (>= 0.15.4)
     ancestry (3.2.1)
       activerecord (>= 4.2.0)
     animate-rails (1.0.10)
@@ -411,6 +414,7 @@ DEPENDENCIES
   activeadmin
   activeadmin_blaze_theme
   activerecord-import
+  aliyunsdkcore
   ancestry
   animate-rails
   annotate (= 2.4.0)

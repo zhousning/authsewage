@@ -184,4 +184,6 @@ gem 'aasm'
 
 gem 'faker', '~> 2.0'
 
+gem 'aliyunsdkcore' 
+
 #gem 'prawn' print pdf

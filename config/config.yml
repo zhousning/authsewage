@@ -158,7 +158,12 @@ defaults: &defaults
     rejected: 不通过
     passed: 通过
     gdkey: adb51a0594db1cd83d9e209f5cb095dd
-    gdname: 巡检系统
+    gdname: nwprojects 
+    face_group: project_wokers 
+    man_no: '0'
+    man: '男'
+    woman_no: '1'
+    woman: '女'
   states: 
     opening: opening
     selecting: selecting
@@ -369,6 +374,17 @@ defaults: &defaults
     label: 北斗地图轨迹管理
     trid: trid
     trname: trname
+  workers:
+    label: 工人管理
+    name: 姓名
+    idno: 身份证
+    phone: 电话
+    gender: 性别
+    state: 状态
+    adress: 家庭住址
+    idfront: 身份证正面
+    idback: 身份证反面
+    avatar: 一寸照片
 development:
   <<: *mysetting
   <<: *defaults

@@ -1,3 +1,5 @@
+require 'aliyunsdkcore'
+
 class GdservicesController < ApplicationController
   layout "application_control"
   before_filter :authenticate_user!
@@ -5,16 +7,30 @@ class GdservicesController < ApplicationController
 
    
   def index
-    url = "https://tsapi.amap.com/v1/track/service/list?key=" + Setting.systems.gdkey
-    res = RestClient.get url
-    obj = JSON.parse(res)
-    if obj["errcode"] == 10000
-      obj['data']['results'].each do |res|
-        sid = res['sid']
-        name = res['name']
-        gdservice = Gdservice.where(:name => name, :sid => sid, :key => Setting.systems.gdkey).first
+    client = RPCClient.new(
+      access_key_id: ENV['ACCESS_KEY'],
+      access_key_secret: ENV['ACCESS_KEY_SECRET'],
+      endpoint: 'https://facebody.cn-shanghai.aliyuncs.com',
+      api_version: '2019-12-30'
+    )
+    
+    response = client.request(
+      action: 'ListFaceDbs',
+      params: {},
+      opts: {
+        method: 'POST',
+        format_params: true
+      }
+    )
+
+    obj = response
+    if obj["RequestId"]
+      obj['Data']['DbList'].each do |res|
+        name = res['Name']
+        sid = obj["RequestId"]
+        gdservice = Gdservice.where(:name => name).first
         if gdservice.nil?
-          Gdservice.create!(:name => name, :sid => sid, :key => Setting.systems.gdkey)
+          Gdservice.create!(:name => name)
         end
       end
     end
@@ -60,17 +76,30 @@ class GdservicesController < ApplicationController
 
    
   def create
-    url = "https://tsapi.amap.com/v1/track/service/add"
-    params = {
-      key: gdservice_params[:key],
-      name: gdservice_params[:name]
-    }
-    res = RestClient.post url, params
-    obj = JSON.parse(res)
-    if obj["errcode"] == 10000
-      sid = obj['data']['sid']
-      name = obj['data']['name']
-      @gdservice = Gdservice.new(format_params(gdservice_params, sid, name))
+    puts ENV['ACCESS_KEY']
+    puts ENV['ACCESS_KEY_SECRET']
+    client = RPCClient.new(
+      access_key_id: ENV['ACCESS_KEY'],
+      access_key_secret: ENV['ACCESS_KEY_SECRET'],
+      endpoint: 'https://facebody.cn-shanghai.aliyuncs.com',
+      api_version: '2019-12-30'
+    )
+    
+    response = client.request(
+      action: 'CreateFaceDb',
+      params: {
+        "Name": gdservice_params[:name]
+    },
+      opts: {
+        method: 'POST',
+        format_params: true
+      }
+    )
+
+    obj = response
+    if obj["RequestId"]
+      sid = obj["RequestId"]
+      @gdservice = Gdservice.new(format_params(gdservice_params, sid))
       if @gdservice.save
         redirect_to :action => :index
       else
@@ -83,32 +112,10 @@ class GdservicesController < ApplicationController
     end
   end
 
-  def format_params(old_params, sid, name)
+  def format_params(old_params, sid)
     new_params = old_params
     new_params[:sid] = old_params[:sid]
-    new_params[:name] = old_params[:name]
     new_params
-  end
-   
-
-   
-  def edit
-   
-    @gdservice = Gdservice.find(iddecode(params[:id]))
-   
-  end
-   
-
-   
-  def update
-   
-    @gdservice = Gdservice.find(iddecode(params[:id]))
-   
-    if @gdservice.update(gdservice_params)
-      redirect_to gdservice_path(idencode(@gdservice.id)) 
-    else
-      render :edit
-    end
   end
    
 
@@ -138,4 +145,3 @@ class GdservicesController < ApplicationController
   
   
 end
-

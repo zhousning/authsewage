@@ -1,3 +1,5 @@
+load "baidu_face.rb"
+
 class WorkersController < ApplicationController
   layout "application_control"
   before_filter :authenticate_user!
@@ -62,12 +64,15 @@ class WorkersController < ApplicationController
    
   def create
     @worker = Worker.new(worker_params)
+    face_worker = BaiDuFace.new
      
     if @worker.save
       unless @worker.avatar.file.nil?
         image = File.join(Rails.root, 'public', @worker.avatar_url)
         image_base64 = Base64.encode64(File.read(image)).gsub(/\s/, '')
         @worker.update_attributes!(:avatar_base => image_base64)
+
+        face_worker.add_face_entity(@worker.id)
       end
 
       redirect_to :action => :index

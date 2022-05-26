@@ -29,6 +29,8 @@
                 %thead
                   %tr
                     %th{:scope => "col", :'data-field' => "id"} #
+                    %th{:scope => "col", :'data-field' => "number"}
+                      编号
                   
                     %th{:scope => "col", :'data-field' => "name"}
                       = Setting.workers.name
@@ -54,9 +56,11 @@
                     %tr
                       %td{:scope => "row"}
                         = index+1
+                      %td
+                        = worker.number
                     
                       %td
-                        = worker.name
+                        = link_to worker.name,  worker_path(idencode(worker.id))
                       %td
                         = worker.idno
                       %td
@@ -72,8 +76,6 @@
                           .row.justify-content-center
                             = link_to "编辑", edit_worker_path(idencode(worker.id)), :class => "button button-royal button-small mr-1" 
                             = link_to "删除",  worker_path(idencode(worker.id)), :method => :delete, :data => {:confirm => "确定删除吗?"}, :class => "button button-caution button-small" 
-                            -#
-                              = link_to "查看",  worker_path(idencode(worker.id)), :class => "button button-primary button-small mr-1" 
               .col-md-12.site-theme-paginate-wrapper.d-flex.justify-content-center.mt-3
                 = paginate @workers, window: 2, left: 1, right: 1 
       = render "layouts/bootstrap/card"

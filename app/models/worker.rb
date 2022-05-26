@@ -14,6 +14,12 @@ class Worker < ActiveRecord::Base
   has_many :devices, :through => :device_workers
 
 
+  before_save :store_unique_number
+  def store_unique_number
+    if self.number == ""
+      self.number = Time.now.to_i.to_s + "%04d" % [rand(10000)]
+    end
+  end
 
 
 end

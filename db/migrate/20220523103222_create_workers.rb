@@ -15,6 +15,7 @@ class CreateWorkers < ActiveRecord::Migration
       t.string :adress,  null: false, default: Setting.systems.default_str
     
       t.string :desc,  null: false, default: Setting.systems.default_str
+      t.string :number,  null: false, default: Setting.systems.default_str
     
 
     

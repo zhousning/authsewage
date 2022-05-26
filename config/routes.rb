@@ -94,6 +94,11 @@ Rails.application.routes.draw do
       post 'img_upload'
     end
   end
+  resources :wx_auths, only: [] do
+    collection do
+      post 'auth_process'
+    end
+  end
 
   #resources :notices
   #resources :articles do
@@ -167,6 +172,7 @@ Rails.application.routes.draw do
     resources :gdteminals, :only => [:index, :new, :create] do
     end
   end
+  resources :workers
   #resources :gdteminals, :only => [] do
   #  resources :gdtraces do
   #  end

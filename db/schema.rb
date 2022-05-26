@@ -395,7 +395,7 @@ ActiveRecord::Schema.define(version: 20220523103222) do
   end
 
   create_table "tasks", force: :cascade do |t|
-    t.date     "task_date",  default: '2022-05-24', null: false
+    t.date     "task_date",  default: '2022-05-25', null: false
     t.text     "des"
     t.string   "state",      default: "ongoing",    null: false
     t.integer  "factory_id"
@@ -498,6 +498,7 @@ ActiveRecord::Schema.define(version: 20220523103222) do
     t.string   "state",       default: "", null: false
     t.string   "adress",      default: "", null: false
     t.string   "desc",        default: "", null: false
+    t.string   "number",      default: "", null: false
     t.string   "avatar",      default: "", null: false
     t.string   "idfront",     default: "", null: false
     t.string   "idback",      default: "", null: false

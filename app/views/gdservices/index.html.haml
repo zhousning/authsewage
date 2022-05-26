@@ -20,7 +20,8 @@
                   %tr
                     %th{:scope => "col", :'data-field' => "id"} #
                   
-                    %th{:scope => "col", :'data-field' => "key"}
+                    -#
+                      %th{:scope => "col", :'data-field' => "key"}
                       = Setting.gdservices.key
                   
                     %th{:scope => "col", :'data-field' => "name"}
@@ -36,7 +37,8 @@
                       %td{:scope => "row"}
                         = index+1
                     
-                      %td
+                      -#
+                        %td
                         = gdservice.key
                       %td
                         = gdservice.name
@@ -45,7 +47,7 @@
                       %td
                         .container-fluid
                           .row.justify-content-center
-                            = link_to "终端管理",  gdservice_gdteminals_path(idencode(gdservice.id)), :class => "button button-primary button-small mr-1" 
+                            = link_to "样本管理",  gdservice_gdteminals_path(idencode(gdservice.id)), :class => "button button-primary button-small mr-1" 
                             -#
                               = link_to "编辑", edit_gdservice_path(idencode(gdservice.id)), :class => "button button-royal button-small mr-1" 
                               = link_to "删除",  gdservice_path(idencode(gdservice.id)), :method => :delete, :data => {:confirm => "确定删除吗?"}, :class => "button button-caution button-small" 
