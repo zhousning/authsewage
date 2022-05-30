@@ -7,5 +7,3 @@
 /log
 !/log/.keep
 /db/schema.rb
-
-/.env

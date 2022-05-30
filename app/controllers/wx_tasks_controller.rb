@@ -10,23 +10,20 @@ class WxTasksController < ApplicationController
 
   def query_all 
     wxuser = WxUser.find_by(:openid => params[:id])
-    #@factory = wxuser.factory
-
-    #items = @factory.tasks.where(['task_date > ? and state = ?', Date.yesterday, Setting.states.ongoing])
-    items = wxuser.tasks.where(['task_date = ? ', Date.today])
+    items = wxuser.devices
    
     obj = []
     items.each do |item|
-      inspectors = item.wx_users
+      inspectors = SignLog.where(:sign_date => Date.today, :wx_user_id => wxuser.id, :device_id => item.id)
+      
       arr = []
       inspectors.each do |ispt|
-        arr << ispt.name + ispt.phone
+        arr << ispt.worker.name
       end
       obj << {
-        #:factory => idencode(factory.id),
         :task_id => item.id,
-        :task_date => item.task_date,
-        :desc => item.des,
+        :task_date => Date.today.strftime('%Y-%m-%d'),
+        :desc => item.name,
         :inspectors => arr
       
       }
@@ -38,23 +35,20 @@ class WxTasksController < ApplicationController
 
   def query_plan
     wxuser = WxUser.find_by(:openid => params[:id])
-    #@factory = wxuser.factory
-
-    #items = @factory.tasks.where(['task_date > ? and state = ?', Date.yesterday, Setting.states.ongoing])
-    items = wxuser.tasks.where(['task_date >= ? ', Date.today])
+    items = wxuser.devices
    
     obj = []
     items.each do |item|
-      inspectors = item.wx_users
+      inspectors = SignLog.where(:sign_date => Date.today, :wx_user_id => wxuser.id, :device_id => item.id)
+      
       arr = []
       inspectors.each do |ispt|
-        arr << ispt.name + ispt.phone
+        arr << ispt.name
       end
       obj << {
-        #:factory => idencode(factory.id),
         :task_id => item.id,
-        :task_date => item.task_date,
-        :desc => item.des,
+        :task_date => Date.today.strftime('%Y-%m-%d'),
+        :desc => item.name,
         :inspectors => arr
       
       }

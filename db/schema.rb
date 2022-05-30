@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20220523103222) do
+ActiveRecord::Schema.define(version: 20220529074922) do
 
   create_table "accounts", force: :cascade do |t|
     t.float    "coin",        default: 0.0,       null: false
@@ -345,6 +345,16 @@ ActiveRecord::Schema.define(version: 20220523103222) do
     t.integer  "spider_id"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+  end
+
+  create_table "sign_logs", force: :cascade do |t|
+    t.date     "sign_date"
+    t.integer  "wx_user_id", default: 0,  null: false
+    t.integer  "device_id",  default: 0,  null: false
+    t.string   "avatar",     default: "", null: false
+    t.integer  "worker_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "spiders", force: :cascade do |t|

@@ -13,6 +13,7 @@ class Worker < ActiveRecord::Base
   has_many :device_workers, :dependent => :destroy
   has_many :devices, :through => :device_workers
 
+  has_many :sign_logs, :dependent => :destroy
 
   before_save :store_unique_number
   def store_unique_number

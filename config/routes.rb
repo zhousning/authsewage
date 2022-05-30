@@ -177,6 +177,10 @@ Rails.application.routes.draw do
   #  resources :gdtraces do
   #  end
   #end
+  resources :sign_logs do
+    get :download_append, :on => :member
+    get :query_all, :on => :collection
+  end
   resources :flower
 
 end

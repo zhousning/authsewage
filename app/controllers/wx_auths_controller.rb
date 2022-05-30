@@ -3,7 +3,7 @@ require 'open-uri'
 
 class WxAuthsController < ApplicationController
   skip_before_action :verify_authenticity_token
-  #before_filter :wxuser_exist?
+  before_filter :wxuser_exist?, :only => [:auth_process]
   
   def image_to_base64(photo)
     tempfile = open(photo)
@@ -19,6 +19,7 @@ class WxAuthsController < ApplicationController
       image_type: 'BASE64',
       group_id_list: Setting.systems.face_group,
     }
+    sleep(2)
 
     body = nil
     RestClient.post(url, params, {content_type: "application/json"}) do |response|
@@ -31,11 +32,37 @@ class WxAuthsController < ApplicationController
   def auth_process
     url = "https://aip.baidubce.com/rest/2.0/face/v3/search"
     body = baidu_request(url, params[:photo])
-    puts body
+    puts body 
+    @device = @wxuser.devices.find(params[:equipment])
 
-    respond_to do |f|
-      f.json{ render :json => {:state => "success"}.to_json}
+    if body["error_code"] == 0
+      users = body['result']['user_list']
+      user = users[0]
+      worker_id = user["user_id"]
+      worker = Worker.find_by_number(worker_id)
+      sign_log = worker.sign_logs.where(:sign_date => Date.today, :device_id => @device.id).first 
+      if sign_log.nil?
+        @sign_log = SignLog.new(:sign_date => Date.today, :wx_user_id => @wxuser.id, :device_id => @device.id, :worker => worker, :avatar => params[:photo]) 
+        if @sign_log.save
+          respond_to do |f|
+            f.json{ render :json => {:state => "success", :name => worker.name}.to_json}
+          end
+        else
+          respond_to do |f|
+            f.json{ render :json => {:state => "error"}.to_json}
+          end
+        end
+      else
+        respond_to do |f|
+          f.json{ render :json => {:state => "success", :name => worker.name}.to_json}
+        end
+      end
+    else
+      respond_to do |f|
+        f.json{ render :json => {:state => "error"}.to_json}
+      end
     end
+
     
   end
 
