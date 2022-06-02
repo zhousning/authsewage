@@ -25,7 +25,23 @@ class BaiDuFaceWorker
   def list_face_entities
   end
 
-  def add_face
+  def add_faces
+    @worker = Worker.find(id)
+    url = 'https://aip.baidubce.com/rest/2.0/face/v3/faceset/user/add'
+    @worker.img.split(',').each do |img|
+      image = File.join(Rails.root, 'public', img)
+      file = image_to_base64(image)
+      params = {
+        image: file,
+        image_type: 'BASE64',
+        user_id: @worker.number,
+        user_info: @worker.name,
+        group_id_list: Setting.systems.face_group,
+      }
+      body = baidu_request(url, params, file)
+      puts body
+      sleep(3)
+    end
   end
 
   def search_face

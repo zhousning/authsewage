@@ -5,10 +5,7 @@ class SignLogsController < ApplicationController
 
    
   def index
-    @sign_log = SignLog.new
-   
-    #@sign_logs = SignLog.all.page( params[:page]).per( Setting.systems.per_page )
-   
+    @sign_logs = SignLog.all.order('created_at DESC').page( params[:page]).per( Setting.systems.per_page )
   end
    
 

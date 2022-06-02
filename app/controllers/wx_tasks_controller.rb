@@ -35,15 +35,16 @@ class WxTasksController < ApplicationController
 
   def query_plan
     wxuser = WxUser.find_by(:openid => params[:id])
-    items = wxuser.devices
-   
+    sign_logs = SignLog.where(:wx_user_id => wxuser.id, :sign_date => [Date.today-10..Date.today]).order('created_at DESC').limit(20)
+
     obj = []
-    items.each do |item|
-      inspectors = SignLog.where(:sign_date => Date.today, :wx_user_id => wxuser.id, :device_id => item.id)
+    hash = Hash.new
+    sign_logs.each do |item|
+      device = Device.find(item.device_id) 
       
       arr = []
       inspectors.each do |ispt|
-        arr << ispt.name
+        arr << ispt.worker.name
       end
       obj << {
         :task_id => item.id,
@@ -108,27 +109,36 @@ class WxTasksController < ApplicationController
   end
 
   def report_create 
-    device_id = params[:site_id].to_i
-    task_id = params[:task_id].to_i
-    longitude = params[:longitude]
-    latitude = params[:latitude]
-    state = params[:state]
-    question = params[:question]
+    name = params[:username].gsub(/\s/,'')
+    idno = params[:idno].gsub(/\s/,'')
+    phone = params[:phone].gsub(/\s/,'')
+    gender = params[:state]
+    adress = params[:question]
     imgs = params[:imgs].join(',')
     wxuser = WxUser.find_by(:openid => params[:id])
-    @factory = wxuser.factory
-    @device = @factory.devices.find(iddecode(device_id))
-    @task = wxuser.tasks.find(iddecode(task_id))
-
-    @task_report = TaskReport.new(:task => @task, :wx_user => wxuser, :device => @device, :longitude => longitude, :latitude => latitude, :question => question, :state => state, :img => imgs) 
-
-    if @task_report.save
-      respond_to do |f|
-        f.json{ render :json => {:state => 'success'}.to_json}
+    worker = Worker.where(:name => name, :idno => idno).first
+    if !worker.nil?
+      if worker.update_attributes!(:state => Setting.states.ongoing, :name => name, :idno => idno, :phone => phone, :gender => gender, :adress => adress, :img => imgs)
+        respond_to do |f|
+          f.json{ render :json => {:state => 'success'}.to_json}
+        end
+      else
+        respond_to do |f|
+          f.json{ render :json => {:state => 'error'}.to_json}
+        end
       end
     else
-      respond_to do |f|
-        f.json{ render :json => {:state => 'error'}.to_json}
+      @worker = Worker.new( :wx_inviter => wxuser.id, :name => name, :idno => idno, :phone => phone, :gender => gender, :adress => adress, :img => imgs)
+
+      if @worker.save
+
+        respond_to do |f|
+          f.json{ render :json => {:state => 'success'}.to_json}
+        end
+      else
+        respond_to do |f|
+          f.json{ render :json => {:state => 'error'}.to_json}
+        end
       end
     end
   end

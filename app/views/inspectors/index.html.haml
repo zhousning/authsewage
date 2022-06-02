@@ -23,6 +23,7 @@
                     -#
                       %th{:scope => "col", :'data-field' => "avatar"}
                       头像
+                    %th{:scope => "col", :'data-field' => "index"}
                     %th{:scope => "col", :'data-field' => "name"}
                       姓名 
                     %th{:scope => "col", :'data-field' => "nickname"}
@@ -30,7 +31,7 @@
                     %th{:scope => "col", :'data-field' => "phone"}
                       电话
                     %th{:scope => "col", :'data-field' => "sites"}
-                      站点
+                      负责站点
                     %th{:scope => "col", :'data-field' => "state"}
                       状态
                     %th{:scope => "col", :'data-field' => "button"}
@@ -40,11 +41,13 @@
                       = Setting.inspectors.password
                   
                 %tbody
-                  - @inspectors.each do |inspector|
+                  - @inspectors.each_with_index do |inspector, index|
                     %tr
                       -#
                         %td
                         = image_tag inspector.avatarurl
+                      %td
+                        = index+1
                       %td
                         = inspector.name
                       %td

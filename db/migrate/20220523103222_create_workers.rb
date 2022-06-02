@@ -10,7 +10,7 @@ class CreateWorkers < ActiveRecord::Migration
     
       t.string :gender,  null: false, default: Setting.systems.default_str
     
-      t.string :state,  null: false, default: Setting.systems.default_str
+      t.string :state,  null: false, default: Setting.states.ongoing
     
       t.string :adress,  null: false, default: Setting.systems.default_str
     
@@ -29,7 +29,9 @@ class CreateWorkers < ActiveRecord::Migration
       t.text :avatar_base
     
 
+      t.text :img
     
+      t.integer :wx_inviter
 
     
       t.timestamps null: false

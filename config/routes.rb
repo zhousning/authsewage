@@ -172,7 +172,10 @@ Rails.application.routes.draw do
     resources :gdteminals, :only => [:index, :new, :create] do
     end
   end
-  resources :workers
+  resources :workers do 
+    get :receive, :on => :member
+    get :reject, :on => :member
+  end
   #resources :gdteminals, :only => [] do
   #  resources :gdtraces do
   #  end

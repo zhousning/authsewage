@@ -1,6 +1,6 @@
 $(".sign_logs").ready(function() {
   if ($(".sign_logs.index").length > 0) {
-    get_sign_logs('sign_logs');
+    //get_sign_logs('sign_logs');
   }
 });
 

@@ -13,6 +13,19 @@ class WorkersController < ApplicationController
    
   end
    
+  def receive 
+    @worker = Worker.find(iddecode(params[:id]))
+    @worker.completed
+    face_worker = BaiDuFace.new
+    face_worker.add_faces(@worker.id)
+    redirect_to :action => :index
+  end
+
+  def reject 
+    @worker = Worker.find(iddecode(params[:id]))
+    @worker.ongoing
+    redirect_to :action => :index
+  end
 
   def query_all 
     items = Worker.all

@@ -314,7 +314,7 @@ defaults:
     enable: enable
     disable: disable
   devices: &31
-    label: 站点信息
+    label: 施工站点 
     idno: 站点编号
     name: 站点名称
     mdno: 县区
@@ -340,7 +340,7 @@ defaults:
     cost: 费用
     state: 状态
   patrolers: &33
-    label: 巡检人员
+    label: 签到负责人 
     name: 姓名
     phone: 电话
     password: 密码
