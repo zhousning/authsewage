@@ -15,11 +15,15 @@
             .col-sm-12
               %h2.text-center
                 = image_tag "gykg.jpg"
+                = Setting.workers.label
+                - if @worker.state == Setting.states.ongoing
+                  %strong.text-danger
+                    未验证
+                - else
+                  %strong.text-success
+                    已验证
             .col-md-8.offset-2.p-5.border
               .card.border-0.mb-3.rounded-0
-                .card-header.bg-transparent.border-dark
-                  %h5
-                    = Setting.workers.label
                 .card-body
                   %table.table-bordered.day-pdt-table.w-100.mb-3
                     %tbody
@@ -37,27 +41,23 @@
                           = @worker.idno
                     
                       
+                      %tr
                         %td.p-2.text-center
                           = Setting.workers.phone
                         %td.p-2.text-center
                           = @worker.phone
                     
-                      %tr
                         %td.p-2.text-center
                           = Setting.workers.gender
                         %td.p-2.text-center
-                          = @worker.gender
+                          = user_gender(@worker.gender)
                     
                       
-                        %td.p-2.text-center
-                          = Setting.workers.state
-                        %td.p-2.text-center
-                          = @worker.state
-                    
                       
+                      %tr
                         %td.p-2.text-center
                           = Setting.workers.adress
-                        %td.p-2.text-center
+                        %td.p-2.text-center{:colspan => 3}
                           = @worker.adress
                     
                       -#
@@ -68,7 +68,11 @@
                           = @worker.desc
                     
               .row
+                - @worker.img.split(',').each do |img|
+                  .col-md-6
+                    = image_tag img, :class => "w-100"
               
+              -#
                 .col-md-6
                   = image_tag @worker.avatar_url, :class => "w-100"
               
@@ -77,11 +81,6 @@
               
                 .col-md-6
                   = image_tag @worker.idback_url, :class => "w-100"
-              
-              .row
-              
-              .row
-              
               
               
       = render "layouts/bootstrap/card"

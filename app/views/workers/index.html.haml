@@ -73,18 +73,21 @@
                       %td
                         .container-fluid
                           .row.justify-content-center
-                            = link_to "编辑", edit_worker_path(idencode(worker.id)), :class => "button button-royal button-small mr-1" 
-                            = link_to "通过", receive_worker_path(idencode(worker.id)), :class => "button button-royal button-small mr-1" 
-                            = link_to "拒绝", reject_worker_path(idencode(worker.id)), :class => "button button-caution button-small mr-1" 
+                            - if worker.state == Setting.states.ongoing
+                              = link_to "通过", receive_worker_path(idencode(worker.id)), :class => "button button-primary button-small mr-1" 
+                            - if worker.state == Setting.states.completed
+                              = link_to "拒绝", reject_worker_path(idencode(worker.id)), :class => "button button-royal button-small mr-1" 
+                            = link_to "删除",  worker_path(idencode(worker.id)), :method => :delete, :data => {:confirm => "确定删除吗?"}, :class => "button button-caution button-small" 
                             -#
-                              = link_to "删除",  worker_path(idencode(worker.id)), :method => :delete, :data => {:confirm => "确定删除吗?"}, :class => "button button-caution button-small" 
+                              = link_to "编辑", edit_worker_path(idencode(worker.id)), :class => "button button-royal button-small mr-1" 
               .col-md-12.site-theme-paginate-wrapper.d-flex.justify-content-center.mt-3
                 = paginate @workers, window: 2, left: 1, right: 1 
       = render "layouts/bootstrap/card"
 
 
 
-#newModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "newModalLabel", :tabindex => "-1"}
+-#
+  #newModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "newModalLabel", :tabindex => "-1"}
   .modal-dialog.modal-xl.modal-dialog-centered
     .modal-content
       .modal-header
