@@ -48,7 +48,10 @@ class WorkersController < ApplicationController
     redirect_to :action => :index
   end
    
-
+  def sign_logs
+    @worker = Worker.find(iddecode(params[:id]))
+    @sign_logs = @worker.sign_logs.order('created_at DESC') 
+  end
   
 
    

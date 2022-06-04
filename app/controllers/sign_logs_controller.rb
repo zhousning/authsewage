@@ -8,7 +8,6 @@ class SignLogsController < ApplicationController
     @sign_logs = SignLog.all.order('created_at DESC').page( params[:page]).per( Setting.systems.per_page )
   end
    
-
   def query_all 
     items = SignLog.all
    
