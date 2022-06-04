@@ -1,6 +1,10 @@
 $(".sign_logs").ready(function() {
   if ($(".sign_logs.index").length > 0) {
-    //get_sign_logs('sign_logs');
+    var table = "#day-pdt-rpt-table";
+    var url = '/sign_logs/query_list';
+    
+    fct_date_event(table, url)
+    
   }
 });
 

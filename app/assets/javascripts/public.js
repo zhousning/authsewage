@@ -68,3 +68,9 @@ function readURL(input) {
 function readFileName(input) {
   $(input).siblings('.append-url').html($(input).val());
 }
+function loadDataToBstpTable(table, url, request_params) {
+  var $table = $(table)
+  $.get(url, request_params).done(function (data) {
+    $table.bootstrapTable('load', data);
+  })
+}

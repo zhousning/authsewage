@@ -1,7 +1,10 @@
 - provide(:title, t('.title'))
 
+= render 'layouts/components/sday_rpt_reports'
 
-.container-fluid
+
+-#
+  .container-fluid
   .row
     = render "layouts/control_sidebar"
     %main.col-md-11.ml-sm-auto.col-lg-11.p-3{:role => "main"}

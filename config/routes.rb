@@ -185,6 +185,7 @@ Rails.application.routes.draw do
   resources :sign_logs do
     get :download_append, :on => :member
     get :query_all, :on => :collection
+    get :query_list, :on => :collection
   end
   resources :flower
 
