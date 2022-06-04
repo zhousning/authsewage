@@ -115,29 +115,35 @@ class WxTasksController < ApplicationController
     gender = params[:state]
     adress = params[:question]
     imgs = params[:imgs].join(',')
-    wxuser = WxUser.find_by(:openid => params[:id])
-    worker = Worker.where(:name => name, :idno => idno).first
-    if !worker.nil?
-      if worker.update_attributes!(:state => Setting.states.ongoing, :name => name, :idno => idno, :phone => phone, :gender => gender, :adress => adress, :img => imgs)
-        respond_to do |f|
-          f.json{ render :json => {:state => 'success'}.to_json}
-        end
-      else
-        respond_to do |f|
-          f.json{ render :json => {:state => 'error'}.to_json}
-        end
+    
+    if idno.blank? || phone.blank? || name.blank?
+      respond_to do |f|
+        f.json{ render :json => {:state => 'error'}.to_json}
       end
     else
-      @worker = Worker.new( :wx_inviter => wxuser.id, :name => name, :idno => idno, :phone => phone, :gender => gender, :adress => adress, :img => imgs)
-
-      if @worker.save
-
-        respond_to do |f|
-          f.json{ render :json => {:state => 'success'}.to_json}
+      wxuser = WxUser.find_by(:openid => params[:id])
+      worker = Worker.where(:name => name, :idno => idno).first
+      if !worker.nil?
+        if worker.update_attributes!(:state => Setting.states.ongoing, :name => name, :idno => idno, :phone => phone, :gender => gender, :adress => adress, :img => imgs)
+          respond_to do |f|
+            f.json{ render :json => {:state => 'success'}.to_json}
+          end
+        else
+          respond_to do |f|
+            f.json{ render :json => {:state => 'error'}.to_json}
+          end
         end
       else
-        respond_to do |f|
-          f.json{ render :json => {:state => 'error'}.to_json}
+        @worker = Worker.new( :wx_inviter => wxuser.id, :name => name, :idno => idno, :phone => phone, :gender => gender, :adress => adress, :img => imgs)
+
+        if @worker.save
+          respond_to do |f|
+            f.json{ render :json => {:state => 'success'}.to_json}
+          end
+        else
+          respond_to do |f|
+            f.json{ render :json => {:state => 'error'}.to_json}
+          end
         end
       end
     end

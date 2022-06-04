@@ -177,6 +177,7 @@ defaults:
     pending: pending
     passed: passed
     working: working
+    processing: processing
   trade_orders: &16
     number: 订单编号
     price: 价格

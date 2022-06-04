@@ -22,19 +22,8 @@ class Worker < ActiveRecord::Base
     end
   end
 
- STATESTR = %w(ongoing completed)
-  STATE = [Setting.states.ongoing, Setting.states.completed]
+  STATE = [Setting.states.ongoing, Setting.states.completed, Setting.states.canceled, Setting.states.processing]
   validates_inclusion_of :state, :in => STATE
-  state_hash = {
-    STATESTR[0] => Setting.states.ongoing, 
-    STATESTR[5] => Setting.states.completed
-  }
-
-  STATESTR.each do |state|
-    define_method "#{state}?" do
-      self.state == state_hash[state]
-    end
-  end
 
   def ongoing 
     update_attribute :state, Setting.states.ongoing
@@ -42,6 +31,14 @@ class Worker < ActiveRecord::Base
 
   def completed
     update_attribute :state, Setting.states.completed
+  end
+
+  def canceled
+    update_attribute :state, Setting.states.canceled
+  end
+
+  def processing 
+    update_attribute :state, Setting.states.processing
   end
 
 end

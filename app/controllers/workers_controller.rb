@@ -1,6 +1,5 @@
-load "baidu_face.rb"
-
 class WorkersController < ApplicationController
+  include BaiduFace
   layout "application_control"
   before_filter :authenticate_user!
   #authorize_resource
@@ -13,9 +12,8 @@ class WorkersController < ApplicationController
    
   def receive 
     @worker = Worker.find(iddecode(params[:id]))
-    @worker.completed
-    face_worker = BaiDuFace.new
-    face_worker.add_faces(@worker.id)
+    @worker.processing
+    BaiduFaceWorker.perform_async(@worker.id)
     redirect_to :action => :index
   end
 
@@ -35,8 +33,11 @@ class WorkersController < ApplicationController
   def destroy
    
     @worker = Worker.find(iddecode(params[:id]))
-   
-    @worker.destroy
+    idno = @worker.number
+    body = delete_user(idno)
+    if body['error_code'] == 0
+      @worker.destroy
+    end
     redirect_to :action => :index
   end
    
