@@ -5,6 +5,7 @@ module BaiduFace
     @worker = Worker.find(id)
     url = 'https://aip.baidubce.com/rest/2.0/face/v3/faceset/user/add'
     has_error = false
+    error_msg = ''
     @worker.img.split(',').each do |img|
       image = File.join(Rails.root, 'public', img)
       file = image_to_base64(image)
@@ -16,14 +17,17 @@ module BaiduFace
         group_id: Setting.systems.face_group,
       }
       body = baidu_request(url, params)
-      puts body
-      has_error = true if body['error_code'] != 0 && body['error_code'] != 223105
+      if body['error_code'] != 0 && body['error_code'] != 223105
+        has_error = true 
+        error_msg += body['error_msg'] + ', '
+      end
       sleep(3)
     end
     if !has_error
       @worker.completed
     else
       @worker.canceled
+      @worker.update_attributes!(:desc => error_msg)
     end
   end
 

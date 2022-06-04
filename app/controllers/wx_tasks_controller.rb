@@ -122,15 +122,21 @@ class WxTasksController < ApplicationController
       end
     else
       wxuser = WxUser.find_by(:openid => params[:id])
-      worker = Worker.where(:name => name, :idno => idno).first
+      worker = Worker.where(:idno => idno).first
       if !worker.nil?
-        if worker.update_attributes!(:state => Setting.states.ongoing, :name => name, :idno => idno, :phone => phone, :gender => gender, :adress => adress, :img => imgs)
-          respond_to do |f|
-            f.json{ render :json => {:state => 'success'}.to_json}
-          end
-        else
+        if worker.state == Setting.states.completed
           respond_to do |f|
             f.json{ render :json => {:state => 'error'}.to_json}
+          end
+        else
+          if worker.update_attributes!(:state => Setting.states.ongoing, :name => name, :idno => idno, :phone => phone, :gender => gender, :adress => adress, :img => imgs)
+            respond_to do |f|
+              f.json{ render :json => {:state => 'success'}.to_json}
+            end
+          else
+            respond_to do |f|
+              f.json{ render :json => {:state => 'error'}.to_json}
+            end
           end
         end
       else

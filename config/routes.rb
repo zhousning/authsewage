@@ -175,6 +175,7 @@ Rails.application.routes.draw do
   resources :workers do 
     get :receive, :on => :member
     get :reject, :on => :member
+    get :query_info, :on => :member
   end
   #resources :gdteminals, :only => [] do
   #  resources :gdtraces do

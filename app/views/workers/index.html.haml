@@ -21,12 +21,15 @@
               .col-md-12
               = hidden_field_tag "fct", idencode(@factory.id), :class => "fct-val"
             .col-md-12
-              %table#item-table.text-center.table-sm{:'data-toggle' => "table", :'data-id-table'=>"advancedTable", :"data-pagination"=>"true", :'data-page-size' => "25", :"data-search" => "true", :'data-advanced-search'=>"true", :'data-virtual-scroll' => false }
+              %table#item-table.text-center.table-sm{:'data-toggle' => "table", :'data-id-table'=>"advancedTable", :"data-search" => "true", :'data-advanced-search'=>"true", :'data-virtual-scroll' => false }
                 %thead
                   %tr
                     %th{:scope => "col", :'data-field' => "id"} #
-                    %th{:scope => "col", :'data-field' => "number"}
+                    -#
+                      %th{:scope => "col", :'data-field' => "number"}
                       编号
+                    %th{:scope => "col", :'data-field' => "wxuser"}
+                      上传人微信
                   
                     %th{:scope => "col", :'data-field' => "name"}
                       = Setting.workers.name
@@ -45,6 +48,9 @@
                   
                     %th{:scope => "col", :'data-field' => "state"}
                       = Setting.workers.state
+
+                    %th{:scope => "col", :'data-field' => "desc"}
+                      错误信息
                   
                     %th{:scope => "col", :'data-field' => "button"}
                 %tbody
@@ -52,11 +58,14 @@
                     %tr
                       %td{:scope => "row"}
                         = index+1
-                      %td
+                      -#
+                        %td
                         = worker.number
                     
                       %td
-                        = link_to worker.name,  worker_path(idencode(worker.id))
+                        = WxUser.find(worker.wx_inviter).name
+                      %td
+                        = worker.name
                       %td
                         = worker.idno
                       %td
@@ -75,13 +84,14 @@
                         - else
                           已验证
                       %td
+                        = worker.desc
+                      %td
                         .container-fluid
                           .row.justify-content-center
-                            -#
-                              - if worker.state == Setting.states.ongoing || worker.state == Setting.states.canceled
-                            = link_to "通过", receive_worker_path(idencode(worker.id)), :class => "button button-primary button-small mr-1" 
-                            - if worker.state == Setting.states.completed
-                              = link_to "拒绝", reject_worker_path(idencode(worker.id)), :class => "button button-royal button-small mr-1" 
+                            %button.worker-show-btn.button.button-action.button-small.mr-2{:'data-id' => idencode(worker.id)}
+                              证件照
+                            = link_to "通过", receive_worker_path(idencode(worker.id)), :class => "button button-primary button-small mr-2" 
+                            = link_to "拒绝", reject_worker_path(idencode(worker.id)), :class => "button button-royal button-small mr-2" 
                             = link_to "删除",  worker_path(idencode(worker.id)), :method => :delete, :data => {:confirm => "确定删除吗?"}, :class => "button button-caution button-small" 
                             -#
                               = link_to "编辑", edit_worker_path(idencode(worker.id)), :class => "button button-royal button-small mr-1" 
@@ -90,7 +100,19 @@
       = render "layouts/bootstrap/card"
 
 
-
+#newModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "newModalLabel", :tabindex => "-1"}
+  .modal-dialog.modal-xl.modal-dialog-centered.modal-dialog-scrollable
+    .modal-content
+      .modal-header
+        %h3#day-pdt-rpt-header.modal-title.text-center
+      .modal-body
+        .row
+          .col-12
+            %table#day-emq-ctn.table.text-center.table-bordered
+        .row#chart-ctn
+-#
+  - if worker.state == Setting.states.ongoing || worker.state == Setting.states.canceled
+  - if worker.state == Setting.states.completed
 -#
   #newModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "newModalLabel", :tabindex => "-1"}
   .modal-dialog.modal-xl.modal-dialog-centered

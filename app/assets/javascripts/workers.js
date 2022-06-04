@@ -1,6 +1,30 @@
 $(".workers").ready(function() {
   if ($(".workers.index").length > 0) {
-    //get_workers('workers');
+    $("#item-table").on('click', 'button.worker-show-btn', function(e) {
+      $('#newModal').modal();
+      var that = e.target
+      var data_id = that.dataset['id'];
+      var url = "/workers/" + data_id + "/query_info";
+      $.get(url).done(function (data) {
+        var emq = data.info;
+        var address = data.address;
+        var imgs = data.img;
+        
+        var emq_table = '<tr><th>姓名</th><th>身份证</th><th>电话</th></tr>';
+        emq_table += '<tr>'; 
+        for (var i=0; i<emq.length; i++) {
+          emq_table += "<td>" + emq[i] + "</td>"; 
+        }
+        emq_table += '</tr>'; 
+        $("#day-emq-ctn").html(emq_table);
+
+        var image = ''
+        for (var j=0; j<imgs.length; j++) {
+           image += "<img class='col-6' src='" + imgs[j] + "'/>" 
+        }
+        $("#chart-ctn").html(image);
+      });
+    });
   }
 });
 

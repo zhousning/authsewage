@@ -7,13 +7,14 @@ class WorkersController < ApplicationController
    
   def index
     @workers = Worker.all.page( params[:page]).per( Setting.systems.per_page )
-   
   end
    
   def receive 
     @worker = Worker.find(iddecode(params[:id]))
-    @worker.processing
-    BaiduFaceWorker.perform_async(@worker.id)
+    if @worker.state != Setting.states.completed
+      @worker.processing
+      BaiduFaceWorker.perform_async(@worker.id)
+    end
     redirect_to :action => :index
   end
 
@@ -23,11 +24,17 @@ class WorkersController < ApplicationController
     redirect_to :action => :index
   end
 
-   
-  def show
-   
+  def query_info 
     @worker = Worker.find(iddecode(params[:id]))
    
+    info = [@worker.name, @worker.idno, @worker.phone]
+    imgs = []
+    @worker.img.split(',').each do |item|
+      imgs << item 
+    end
+    respond_to do |f|
+      f.json{ render :json => {:info => info, :img => imgs}.to_json}
+    end
   end
    
   def destroy
@@ -51,6 +58,12 @@ class WorkersController < ApplicationController
   #end
   # 
 
+  #def show
+  # 
+  #  @worker = Worker.find(iddecode(params[:id]))
+  # 
+  #end
+   
   # 
   #def create
   #  @worker = Worker.new(worker_params)
