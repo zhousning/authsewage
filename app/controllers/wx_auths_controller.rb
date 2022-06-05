@@ -1,18 +1,17 @@
-load "baidu_face.rb"
-
 class WxAuthsController < ApplicationController
+  include BaiduFace
   skip_before_action :verify_authenticity_token
   before_filter :wxuser_exist?, :only => [:auth_process]
   
   def auth_process
-    badu_face = BaiDuFace.new
-    body = badu_face.search_face(params[:photo])
+    body = search_face(params[:photo])
     @device = @wxuser.devices.find(params[:equipment])
 
+    puts body
     if body["error_code"] == 0
       users = body['result']['user_list']
       user = users[0]
-      worker = Worker.find_by_number(user["user_id"])
+      worker = Worker.find_by_idno(user["user_id"])
       sign_log = worker.sign_logs.where(:sign_date => Date.today, :device_id => @device.id).first 
       if sign_log.nil?
         @sign_log = SignLog.new(:sign_date => Date.today, :wx_user_id => @wxuser.id, :device_id => @device.id, :worker => worker, :avatar => params[:photo]) 
