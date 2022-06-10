@@ -20,9 +20,6 @@ class Device < ActiveRecord::Base
   has_many :device_wxusers, :dependent => :destroy
   has_many :wx_users, :through => :device_wxusers
 
-  has_many :device_workers, :dependent => :destroy
-  has_many :workers, :through => :device_workers
-
   belongs_to :factory
 
   #不在这里使用异步会出问题做个警示

@@ -18,20 +18,11 @@
 
 class WxUser < ActiveRecord::Base
 
-  has_many :task_wxusers, :dependent => :destroy
-  has_many :tasks, :through => :task_wxusers
-
   has_many :fct_wxusers, :dependent => :destroy
   has_many :factories, :through => :fct_wxusers
 
   has_many :device_wxusers, :dependent => :destroy
   has_many :devices, :through => :device_wxusers
-
-  has_many :task_reports
-
-  has_many :task_logs
-
-  has_one :gdteminal
 
  STATESTR = %w(ongoing completed)
   STATE = [Setting.states.ongoing, Setting.states.completed]
@@ -55,11 +46,4 @@ class WxUser < ActiveRecord::Base
     update_attribute :state, Setting.states.completed
   end
 
-  def task_pending
-    update_attribute :task_state, Setting.states.pending
-  end
-
-  def task_working
-    update_attribute :task_state, Setting.states.working
-  end
 end

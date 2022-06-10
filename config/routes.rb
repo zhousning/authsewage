@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root :to => 'controls#index'
+  root :to => 'sign_logs#index'
 
   #mount Ckeditor::Engine => '/ckeditor'
   devise_for :admin_users, ActiveAdmin::Devise.config
@@ -28,14 +28,12 @@ Rails.application.routes.draw do
   #  post :mobile_authc_create, :on => :member
   #  get :mobile_authc_status, :on => :member
   #end
+  #resources :systems, :only => [] do
+  #  get :send_confirm_code, :on => :collection
+  #end
+
 
   resources :roles
-
-  #resources :accounts, :only => [:edit, :update] do
-  #  get :recharge, :on => :collection 
-  #  get :info, :on => :collection
-  #  get :status, :on => :collection
-  #end
 
   require 'sidekiq/web'
   require 'sidekiq/cron/web'
@@ -51,16 +49,33 @@ Rails.application.routes.draw do
     get :produce, :on => :member
   end
 
-  #resources :nlps do
-  #  collection do
-  #    post 'analyze'
-  #    get 'poem'
-  #    post 'couplet'
-  #  end
-  #end
-  #resources :ocrs do
-  #  post :analyze, :on => :collection
-  #end
+  resources :selectors
+
+  resources :inspectors, :only => [:index] do
+    get :receive, :on => :member
+    get :reject, :on => :member
+  end
+ 
+  resources :factories, :only => [] do
+    resources :devices do
+      post :parse_excel, :on => :collection
+      get :xls_download, :on => :collection
+      get :query_all, :on => :collection
+      get :info, :on => :member
+    end
+  end
+
+  resources :workers do 
+    get :receive, :on => :member
+    get :reject, :on => :member
+    get :query_info, :on => :member
+    get :sign_logs, :on => :member
+  end
+  resources :sign_logs do
+    get :download_append, :on => :member
+    get :query_all, :on => :collection
+    get :query_list, :on => :collection
+  end
 
   resources :wx_users, only: [:update] do
     collection do
@@ -82,13 +97,6 @@ Rails.application.routes.draw do
       post 'report_create'
     end
   end
-  resources :wx_task_logs, only: [] do
-    collection do
-      get 'task_start'
-      get 'task_end'
-      post 'accept_points'
-    end
-  end
   resources :wx_resources, only: [] do
     collection do
       post 'img_upload'
@@ -100,93 +108,6 @@ Rails.application.routes.draw do
     end
   end
 
-  #resources :notices
-  #resources :articles do
-  #  get :export, :on => :collection
-  #  get :main_image, :on => :member
-  #  get :detail_image, :on => :member
-  #end
-
-  #resources :systems, :only => [] do
-  #  get :send_confirm_code, :on => :collection
-  #end
-  #
-  #resources :orders, :only => [:new, :create] do
-  #  get :pay, :on => :collection
-  #  get :alipay_return, :on => :collection
-  #  post :alipay_notify, :on => :collection
-  #end
-
-  #resources :spiders do
-  #  get :start, :on => :member
-  #end
-
-  resources :selectors
-
-  resources :inspectors, :only => [:index] do
-    get :receive, :on => :member
-    get :reject, :on => :member
-  end
- 
-  resources :factories, :only => [] do
-    #get :bigscreen, :on => :member
-    
-    resources :devices do
-      post :parse_excel, :on => :collection
-      get :xls_download, :on => :collection
-      get :query_all, :on => :collection
-      get :info, :on => :member
-      #get :uphold, :on => :member
-    end
-    resources :tasks do
-      get :ongoing, :on => :member
-      get :finish, :on => :member
-    end
-    #resources :upholds do
-    #  get :download_append, :on => :member
-    #  get :query_all, :on => :collection
-    #  get :query_devices, :on => :collection
-    #end
-    #resources :patrolers do
-    #  get :download_append, :on => :member
-    #  get :query_all, :on => :collection
-    #  post :patroler_update, :on => :member
-    #end
-
-  end
-
-  #resources :equipments, :only => [] do
-  #  get :fcts, :on => :collection
-  #  get :upholds, :on => :collection
-  #  get :query_all, :on => :collection
-  #end
-  #resources :task_reports do
-  #  get :download_append, :on => :member
-  #  get :query_all, :on => :collection
-  #end
-  resources :task_logs, :only => [] do
-    get :query_latest_point, :on => :collection
-    get :query_trace, :on => :collection
-  end
-  resources :gdservices, :only => [:index, :new, :create]  do
-    resources :gdteminals, :only => [:index, :new, :create] do
-    end
-  end
-  resources :workers do 
-    get :receive, :on => :member
-    get :reject, :on => :member
-    get :query_info, :on => :member
-    get :sign_logs, :on => :member
-  end
-  #resources :gdteminals, :only => [] do
-  #  resources :gdtraces do
-  #  end
-  #end
-  resources :sign_logs do
-    get :download_append, :on => :member
-    get :query_all, :on => :collection
-    get :query_list, :on => :collection
-  end
   resources :flower
 
 end
