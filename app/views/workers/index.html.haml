@@ -90,7 +90,7 @@
                           .row.justify-content-center
                             %button.worker-show-btn.button.button-action.button-small.mr-2{:'data-id' => idencode(worker.id)}
                               证件照
-                            = link_to "签到记录", sign_logs_worker_path(idencode(worker.id)), :class => "button button-inverse button-small mr-2" 
+                            = link_to "签到记录", signlogs_worker_path(idencode(worker.id)), :class => "button button-inverse button-small mr-2" 
                             = link_to "通过", receive_worker_path(idencode(worker.id)), :class => "button button-primary button-small mr-2" 
                             = link_to "拒绝", reject_worker_path(idencode(worker.id)), :class => "button button-royal button-small mr-2" 
                             = link_to "删除",  worker_path(idencode(worker.id)), :method => :delete, :data => {:confirm => "确定删除吗?"}, :class => "button button-caution button-small" 

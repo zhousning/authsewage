@@ -51,11 +51,6 @@ Rails.application.routes.draw do
 
   resources :selectors
 
-  resources :inspectors, :only => [:index] do
-    get :receive, :on => :member
-    get :reject, :on => :member
-  end
- 
   resources :factories, :only => [] do
     resources :devices do
       post :parse_excel, :on => :collection
@@ -63,13 +58,18 @@ Rails.application.routes.draw do
       get :query_all, :on => :collection
       get :info, :on => :member
     end
+    resources :inspectors, :only => [:index] do
+      get :receive, :on => :member
+      get :reject, :on => :member
+    end
+ 
   end
 
   resources :workers do 
     get :receive, :on => :member
     get :reject, :on => :member
     get :query_info, :on => :member
-    get :sign_logs, :on => :member
+    get :signlogs, :on => :member
   end
   resources :sign_logs do
     get :download_append, :on => :member

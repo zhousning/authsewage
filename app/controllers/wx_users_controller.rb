@@ -49,13 +49,20 @@ class WxUsersController < ApplicationController
   end
 
   def fcts
-    objs = []
-    fcts = Device.select('mdno').uniq
-    fcts.each do |fct|
-      objs << fct.mdno
+    device_objs = []
+    devices = Device.select('mdno').uniq
+    devices.each do |device|
+      device_objs << device.mdno
     end
+
+    factories = Factory.all
+    fct_objs = []
+    factories.each do |fct|
+      fct_objs << fct.name 
+    end
+
     respond_to do |f|
-      f.json { render :json => objs.to_json }
+      f.json { render :json => {fcts: fct_objs, devices: device_objs}.to_json }
     end
   end
 
@@ -84,18 +91,21 @@ class WxUsersController < ApplicationController
   end
 
   def set_fct
-    fcts = params[:fct]
+    fcts = params[:sites]
     ids = []
     fcts.each do |fct|
       ids << iddecode(fct)
     end
     devices = Device.where(:id => ids)
+    factory = Factory.find_by_name(params[:fct])
     wxuser = WxUser.find_by(:openid => params[:id])
-    respond_to do |f|
-      if wxuser.update_attributes(:state => Setting.states.ongoing, :devices => devices, :name => params[:name], :phone => params[:phone] )
-        f.json { render :json => {:status => "success" }.to_json}
-      else
-        f.json { render :json => {:status => "error"}.to_json}
+    if wxuser.state != Setting.states.completed
+      respond_to do |f|
+        if wxuser.update_attributes(:state => Setting.states.ongoing, :factories => [factory], :devices => devices, :name => params[:name], :phone => params[:phone] )
+          f.json { render :json => {:status => "success" }.to_json}
+        else
+          f.json { render :json => {:status => "error"}.to_json}
+        end
       end
     end
   end
