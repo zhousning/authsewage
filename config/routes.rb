@@ -68,13 +68,11 @@ Rails.application.routes.draw do
       get :query_info, :on => :member
       get :signlogs, :on => :member
     end
+    resources :sign_logs, :only => [:index] do
+      get :query_list, :on => :collection
+    end
   end
 
-  resources :sign_logs do
-    get :download_append, :on => :member
-    get :query_all, :on => :collection
-    get :query_list, :on => :collection
-  end
 
   resources :grp_inspectors, :only => [:index]
 
