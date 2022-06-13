@@ -6,17 +6,12 @@ class InspectorsController < ApplicationController
 
   def index
     @factory = my_factory
-    if current_user.has_role?(Setting.roles.role_grp)
-      @inspectors = WxUser.all
-    else
-      @inspectors = @factory.wx_users
-    end
+    @inspectors = @factory.wx_users
   end
 
   def receive 
     @factory = my_factory
     @wxuser = @factory.wx_users.find(iddecode(params[:id]))
-    #@wxuser = WxUser.find(iddecode(params[:id]))
     @wxuser.completed
     redirect_to :action => :index
   end
@@ -24,7 +19,6 @@ class InspectorsController < ApplicationController
   def reject 
     @factory = my_factory
     @wxuser = @factory.wx_users.find(iddecode(params[:id]))
-    #@wxuser = WxUser.find(iddecode(params[:id]))
     @wxuser.ongoing
     redirect_to :action => :index
   end

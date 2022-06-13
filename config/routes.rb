@@ -77,6 +77,13 @@ Rails.application.routes.draw do
     get :query_list, :on => :collection
   end
 
+  resources :grp_inspectors, :only => [:index]
+  resources :grp_devices, :only => [:index] do
+    collection do
+      get 'query_all'
+    end
+  end
+
   resources :wx_users, only: [:update] do
     collection do
       post 'get_userid'

@@ -330,9 +330,9 @@ defaults:
     qrcode: 二维码
     state: 状态
     desc: 备注
-    state_normal: 正常
-    state_repair: 检修
-    state_stop: 停用
+    state_normal: 施工中 
+    state_repair: 已完工
+    state_stop: 停工
   upholds: &32
     label: 巡检记录
     uphold_date: 日期

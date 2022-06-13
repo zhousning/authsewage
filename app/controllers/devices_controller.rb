@@ -2,12 +2,9 @@ class DevicesController < ApplicationController
   layout "application_control"
   before_filter :authenticate_user!, :except => [:info]
   authorize_resource :except => [:info]
-
    
   def index
     @factory = my_factory
-    #@device = Device.new
-    #@devices = Device.all.page( params[:page]).per( Setting.systems.per_page )
   end
 
   def query_all 
@@ -35,38 +32,10 @@ class DevicesController < ApplicationController
     end
   end
    
-
-   
-  def show
-   
-    @factory = my_factory
-    @device = @factory.devices.find(iddecode(params[:id]))
-   
-  end
-   
-  def info 
-   
-    @factory = Factory.find(iddecode(params[:factory_id]))
-    @device = @factory.devices.find(iddecode(params[:id]))
-    render :layout => "application_no_header"
-  end
-
-  def uphold 
-   
-    @factory = my_factory
-    @device = @factory.devices.find(iddecode(params[:id]))
-    @upholds = @device.upholds
-   
-  end
-   
-
-   
   def new
     @factory = my_factory
     @device = Device.new
   end
-   
-
    
   def create
     @factory = my_factory
@@ -74,14 +43,11 @@ class DevicesController < ApplicationController
     @device.factory = @factory
     
     if @device.save
-      DeviceQrcodeWorker.perform_async(@device.id)
-      redirect_to :action => :index
+      redirect_to edit_factory_device_path(idencode(@factory.id), idencode(@device.id)) 
     else
       render :new
     end
   end
-   
-
    
   def edit
    
@@ -90,42 +56,31 @@ class DevicesController < ApplicationController
    
   end
    
-
-   
   def update
    
     @factory = my_factory
     @device = @factory.devices.find(iddecode(params[:id]))
    
     if @device.update(device_params)
-      redirect_to factory_device_path(idencode(@factory.id), idencode(@device.id)) 
+      redirect_to edit_factory_device_path(idencode(@factory.id), idencode(@device.id)) 
     else
       render :edit
     end
   end
    
-
-   
   def destroy
    
     @factory = my_factory
     @device = @factory.devices.find(iddecode(params[:id]))
+    wxusers = @device.wx_users
    
-    @device.destroy
+    @device.destroy if wxusers.blank?
     redirect_to :action => :index
   end
    
-
-  
-
-  
-
-  
   def xls_download
     send_file File.join(Rails.root, "templates", "站点模板.xlsx"), :filename => "站点模板.xlsx", :type => "application/force-download", :x_sendfile=>true
   end
-  
-  
   
   def parse_excel
     @factory = my_factory
@@ -166,7 +121,7 @@ class DevicesController < ApplicationController
         elsif !(/H/ =~ k).nil?
           desc = v.nil? ? "" : v.to_s.strip  
         elsif !(/I/ =~ k).nil?
-          state = v.nil? ? "正常" : v.to_s.strip
+          state = v.nil? ? "施工中" : v.to_s.strip
         end
       end
 
@@ -176,9 +131,7 @@ class DevicesController < ApplicationController
       else
         @device = Device.new(:idno => idno, :name => name, :mdno => mdno, :unit => unit, :supplier => supplier, :pos => pos, :pos_no => pos_no, :desc  => desc, :state => state, :factory => @factory)
 
-        if @device.save
-          DeviceQrcodeWorker.perform_async(@device.id)
-        end
+        @device.save
       end
     end
 
@@ -187,14 +140,31 @@ class DevicesController < ApplicationController
 
   private
     def device_params
-      params.require(:device).permit( :idno, :name, :mdno, :unit, :out_date, :mount_date, :supplier, :mfcture, :pos, :pos_no, :life, :desc , :avatar, :state, upholds_attributes: uphold_params )
+      params.require(:device).permit( :idno, :name, :mdno, :unit, :out_date, :mount_date, :supplier, :mfcture, :pos, :pos_no, :life, :desc , :avatar, :state)
     end
-  
-    def uphold_params
-      [:id, :uphold_date, :reason, :content, :cost, :state ,:_destroy]
-    end
-  
-  
   
 end
+
+#def show
+# 
+#  @factory = my_factory
+#  @device = @factory.devices.find(iddecode(params[:id]))
+# 
+#end
+# 
+#def info 
+# 
+#  @factory = Factory.find(iddecode(params[:factory_id]))
+#  @device = @factory.devices.find(iddecode(params[:id]))
+#  render :layout => "application_no_header"
+#end
+
+#def uphold 
+# 
+#  @factory = my_factory
+#  @device = @factory.devices.find(iddecode(params[:id]))
+#  @upholds = @device.upholds
+# 
+#end
+ 
 

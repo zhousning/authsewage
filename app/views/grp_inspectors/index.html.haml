@@ -21,6 +21,8 @@
                       %th{:scope => "col", :'data-field' => "avatar"}
                       头像
                     %th{:scope => "col", :'data-field' => "index"}
+                    %th{:scope => "col", :'data-field' => "company"}
+                      公司
                     %th{:scope => "col", :'data-field' => "name"}
                       姓名 
                     %th{:scope => "col", :'data-field' => "nickname"}
@@ -31,11 +33,6 @@
                       负责站点
                     %th{:scope => "col", :'data-field' => "state"}
                       状态
-                    %th{:scope => "col", :'data-field' => "button"}
-                  
-                    -#
-                      %th{:scope => "col", :'data-field' => "password"}
-                      = Setting.inspectors.password
                   
                 %tbody
                   - @inspectors.each_with_index do |inspector, index|
@@ -45,6 +42,8 @@
                         = image_tag inspector.avatarurl
                       %td
                         = index+1
+                      %td
+                        = inspector.factories.first.name
                       %td
                         = inspector.name
                       %td
@@ -59,11 +58,6 @@
                           未使用
                         - else
                           已使用
-                      %td
-                        .container-fluid
-                          .row.justify-content-center
-                            = link_to "通过", receive_factory_inspector_path((idencode(@factory.id)), idencode(inspector.id)), :class => "button button-royal button-small mr-2", :data => {:confirm => "确定通过吗?"}
-                            = link_to "拒绝", reject_factory_inspector_path((idencode(@factory.id)), idencode(inspector.id)), :class => "button button-caution button-small mr-2", :data => {:confirm => "确定拒绝吗?"}
 
       = render "layouts/bootstrap/card"
 
