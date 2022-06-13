@@ -33,6 +33,9 @@ class CreateWorkers < ActiveRecord::Migration
     
       t.integer :wx_inviter
 
+      t.integer :factory
+
+
     
       t.timestamps null: false
     end

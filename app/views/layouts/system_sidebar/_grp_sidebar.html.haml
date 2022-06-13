@@ -9,10 +9,10 @@
             -#
               = link_to sign_logs_path, :class => "list-group-item list-group-item-action border-0 text-left sidebar-text-font px-0 #{(/sign_log/ =~ request.path).nil? ? '' : 'text-primary'} " do
                 = fa_icon "tasks", text: Setting.sign_logs.label, class: "ml-4 mr-2"  
-              = link_to workers_path, :class => "list-group-item list-group-item-action border-0 text-left sidebar-text-font px-0 #{(/worker/ =~ request.path).nil? ? '' : 'text-primary'} " do
-                = fa_icon "map-marker", text: '工人管理', class: "ml-4 mr-2"  
               = link_to factory_devices_path(idencode(fct.id)), :class => "list-group-item list-group-item-action border-0 text-left sidebar-text-font px-0 #{(/device/ =~ request.path).nil? ? '' : 'text-primary'} " do
                 = fa_icon "sitemap", text: Setting.devices.label, class: "ml-4 mr-2"  
+            = link_to grp_workers_path, :class => "list-group-item list-group-item-action border-0 text-left sidebar-text-font px-0 #{(/grp_worker/ =~ request.path).nil? ? '' : 'text-primary'} " do
+              = fa_icon "map-marker", text: '工人管理', class: "ml-4 mr-2"  
             = link_to grp_inspectors_path, :class => "list-group-item list-group-item-action border-0 text-left sidebar-text-font px-0 #{(/grp_inspect/ =~ request.path).nil? ? '' : 'text-primary'} " do
               = fa_icon "edit", text: Setting.patrolers.label, class: "ml-4 mr-2"  
             = link_to grp_devices_path, :class => "list-group-item list-group-item-action border-0 text-left sidebar-text-font px-0 #{(/grp_device/ =~ request.path).nil? ? '' : 'text-primary'} " do

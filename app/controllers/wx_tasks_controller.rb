@@ -140,7 +140,8 @@ class WxTasksController < ApplicationController
           end
         end
       else
-        @worker = Worker.new( :wx_inviter => wxuser.id, :name => name, :idno => idno, :phone => phone, :gender => gender, :adress => adress, :img => imgs)
+        factory = wxuser.factories.first.id
+        @worker = Worker.new(:factory => factory, :wx_inviter => wxuser.id, :name => name, :idno => idno, :phone => phone, :gender => gender, :adress => adress, :img => imgs)
 
         if @worker.save
           respond_to do |f|

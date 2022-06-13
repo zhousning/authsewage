@@ -29,12 +29,11 @@ AdminUser.create!(:phone => Setting.admins.phone, :email => Setting.admins.email
 @role_position = Role.where(:name => Setting.roles.role_position).first
 @role_device    = Role.where(:name => Setting.roles.role_device).first
 @role_inspector    = Role.where(:name => Setting.roles.role_inspector).first
-@role_beidou    = Role.where(:name => Setting.roles.role_beidou).first
 
 ##厂区管理者
 @fctmgn = [@role_fct, @role_position, @role_device, @role_inspector]
 ##集团管理者
-@grp_mgn = [@role_grp, @role_beidou] 
+@grp_mgn = [@role_grp] 
 
 @lssw = Company.create!(:area => "梁山县", :name => "梁山农污")
 @jiax = Company.create!(:area => "嘉祥县", :name => "嘉祥农污")

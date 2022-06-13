@@ -9,7 +9,7 @@
           .card-body.py-0.pl-2.pr-0
             = link_to sign_logs_path(), :class => "list-group-item list-group-item-action border-0 text-left sidebar-text-font px-0 #{(/sign_log/ =~ request.path).nil? ? '' : 'text-primary'} " do
               = fa_icon "tasks", text: Setting.sign_logs.label, class: "ml-4 mr-2"  
-            = link_to workers_path, :class => "list-group-item list-group-item-action border-0 text-left sidebar-text-font px-0 #{(/worker/ =~ request.path).nil? ? '' : 'text-primary'} " do
+            = link_to factory_workers_path(idencode(fct.id)), :class => "list-group-item list-group-item-action border-0 text-left sidebar-text-font px-0 #{(/worker/ =~ request.path).nil? ? '' : 'text-primary'} " do
               = fa_icon "map-marker", text: '工人管理', class: "ml-4 mr-2"  
             = link_to factory_devices_path(idencode(fct.id)), :class => "list-group-item list-group-item-action border-0 text-left sidebar-text-font px-0 #{(/device/ =~ request.path).nil? ? '' : 'text-primary'} " do
               = fa_icon "sitemap", text: Setting.devices.label, class: "ml-4 mr-2"  

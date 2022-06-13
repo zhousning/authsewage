@@ -4,13 +4,15 @@ class WorkersController < ApplicationController
   before_filter :authenticate_user!
   #authorize_resource
 
-   
   def index
-    @workers = Worker.all.page( params[:page]).per( Setting.systems.per_page )
+    @factory = my_factory
+    gon.fct = idencode(@factory.id)
+    @workers = Worker.where(:factory => @factory.id).order('created_at DESC').page( params[:page]).per( Setting.systems.per_page )
   end
    
   def receive 
-    @worker = Worker.find(iddecode(params[:id]))
+    @factory = my_factory
+    @worker = Worker.where(:factory => @factory.id, :id => iddecode(params[:id])).first
     if @worker.state != Setting.states.completed
       @worker.processing
       BaiduFaceWorker.perform_async(@worker.id)
@@ -19,13 +21,15 @@ class WorkersController < ApplicationController
   end
 
   def reject 
-    @worker = Worker.find(iddecode(params[:id]))
-    @worker.ongoing
+    @factory = my_factory
+    @worker = Worker.where(:factory => @factory.id, :id => iddecode(params[:id])).first
+    @worker.ongoing if @worker.state != Setting.states.completed
     redirect_to :action => :index
   end
 
   def query_info 
-    @worker = Worker.find(iddecode(params[:id]))
+    @factory = my_factory
+    @worker = Worker.where(:factory => @factory.id, :id => iddecode(params[:id])).first
    
     info = [@worker.name, @worker.idno, @worker.phone]
     imgs = []
@@ -38,26 +42,23 @@ class WorkersController < ApplicationController
   end
    
   def destroy
-   
-    @worker = Worker.find(iddecode(params[:id]))
-    idno = @worker.idno
-    body = delete_user(idno)
-    if body['error_code'] == 0
-      @worker.destroy
+    @factory = my_factory
+    @worker = Worker.where(:factory => @factory.id, :id => iddecode(params[:id])).first
+    if @worker.state != Setting.states.completed
+      body = delete_user(@worker.idno)
+      if body['error_code'] == 0
+        @worker.destroy
+      end
     end
     redirect_to :action => :index
   end
    
   def signlogs
-    @worker = Worker.find(iddecode(params[:id]))
+    @factory = my_factory
+    @worker = Worker.where(:factory => @factory.id, :id => iddecode(params[:id])).first
     @sign_logs = @worker.sign_logs.order('created_at DESC') 
   end
   
-
-   
-  
-  
-
   private
     def worker_params
       params.require(:worker).permit( :name, :idno, :phone, :gender, :state, :adress, :desc , :avatar , :idfront , :idback)

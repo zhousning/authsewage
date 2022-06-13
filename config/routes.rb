@@ -62,15 +62,14 @@ Rails.application.routes.draw do
       get :receive, :on => :member
       get :reject, :on => :member
     end
- 
+    resources :workers, :only => [:index, :destroy]  do 
+      get :receive, :on => :member
+      get :reject, :on => :member
+      get :query_info, :on => :member
+      get :signlogs, :on => :member
+    end
   end
 
-  resources :workers do 
-    get :receive, :on => :member
-    get :reject, :on => :member
-    get :query_info, :on => :member
-    get :signlogs, :on => :member
-  end
   resources :sign_logs do
     get :download_append, :on => :member
     get :query_all, :on => :collection
@@ -78,10 +77,17 @@ Rails.application.routes.draw do
   end
 
   resources :grp_inspectors, :only => [:index]
+
   resources :grp_devices, :only => [:index] do
     collection do
       get 'query_all'
     end
+  end
+
+  resources :grp_workers, :only => [:index] do
+    get :query_all, :on => :collection
+    get :query_info, :on => :member
+    get :signlogs, :on => :member
   end
 
   resources :wx_users, only: [:update] do

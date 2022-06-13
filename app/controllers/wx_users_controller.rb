@@ -121,7 +121,8 @@ class WxUsersController < ApplicationController
       if wxuser.state == Setting.states.ongoing
         f.json { render :json => {:status => Setting.states.ongoing }.to_json}
       else
-        f.json { render :json => {:status => Setting.states.completed, :name => wxuser.name, :phone => wxuser.phone, :fct => device_name}.to_json}
+        owner = wxuser.factories.first.name
+        f.json { render :json => {:status => Setting.states.completed, :name => wxuser.name, :phone => wxuser.phone, :fct => device_name, :owner => owner}.to_json}
       end
     end
   end

@@ -4,7 +4,7 @@ $(".workers").ready(function() {
       $('#newModal').modal();
       var that = e.target
       var data_id = that.dataset['id'];
-      var url = "/workers/" + data_id + "/query_info";
+      var url = "/factories/" + gon.fct + "/workers/" + data_id + "/query_info";
       $.get(url).done(function (data) {
         var emq = data.info;
         var address = data.address;
