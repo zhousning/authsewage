@@ -1,7 +1,7 @@
 class SignLogsController < ApplicationController
   layout "application_control"
   before_filter :authenticate_user!
-  #authorize_resource
+  authorize_resource
 
    
   def index
@@ -41,7 +41,7 @@ class SignLogsController < ApplicationController
         #:id => idencode(item.id),
         :id => index + 1, 
 
-        :sign_date => item.sign_date,
+        :sign_date => item.created_at.strftime('%Y-%m-%d %H:%M:%S'),
        
         :wx_user_id => WxUser.find(item.wx_user_id).name,
        

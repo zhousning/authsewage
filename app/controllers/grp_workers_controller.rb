@@ -1,7 +1,7 @@
 class GrpWorkersController < ApplicationController
   layout "application_control"
   before_filter :authenticate_user!
-  #authorize_resource
+  authorize_resource
 
   def index
   end

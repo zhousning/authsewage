@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root :to => 'sign_logs#index'
+  root :to => 'controls#index'
 
   #mount Ckeditor::Engine => '/ckeditor'
   devise_for :admin_users, ActiveAdmin::Devise.config
@@ -56,7 +56,6 @@ Rails.application.routes.draw do
       post :parse_excel, :on => :collection
       get :xls_download, :on => :collection
       get :query_all, :on => :collection
-      get :info, :on => :member
     end
     resources :inspectors, :only => [:index] do
       get :receive, :on => :member

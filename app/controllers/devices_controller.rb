@@ -1,7 +1,7 @@
 class DevicesController < ApplicationController
   layout "application_control"
-  before_filter :authenticate_user!, :except => [:info]
-  authorize_resource :except => [:info]
+  before_filter :authenticate_user!
+  authorize_resource
    
   def index
     @factory = my_factory
