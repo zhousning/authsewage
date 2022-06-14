@@ -5,8 +5,26 @@ class SignLogsController < ApplicationController
 
    
   def index
-    @factory = my_factory
-    @factories = @factory.devices
+    @factory = current_user.factories.first
+    gon.fct = idencode(@factory.id)
+  end
+
+  def query_device
+    @factory = my_factory 
+    @devices = @factory.devices
+    result = []
+    @devices.each do |device|
+      result << {
+        id: idencode(device.id),
+        text: device.name
+      }
+    end
+    obj = {
+      "results": result
+    }
+    respond_to do |f|
+      f.json{ render :json => obj.to_json}
+    end
   end
    
   def query_list

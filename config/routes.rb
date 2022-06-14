@@ -43,7 +43,7 @@ Rails.application.routes.draw do
   resources :nests 
   resources :domains 
 
-  resources :controls, :only => [:index]
+  #resources :controls, :only => [:index]
 
   resources :templates do
     get :produce, :on => :member
@@ -70,9 +70,14 @@ Rails.application.routes.draw do
     end
     resources :sign_logs, :only => [:index] do
       get :query_list, :on => :collection
+      get :query_device, :on => :collection
     end
   end
 
+  resources :grp_sign_logs, :only => [:index] do
+    get :query_list, :on => :collection
+    get :query_device, :on => :collection
+  end
 
   resources :grp_inspectors, :only => [:index]
 

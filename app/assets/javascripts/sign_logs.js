@@ -1,8 +1,9 @@
 $(".sign_logs").ready(function() {
   if ($(".sign_logs.index").length > 0) {
     var table = "#day-pdt-rpt-table";
-    var url = '/sign_logs/query_list';
-    
+    var url = '/factories/' + gon.fct + '/sign_logs/query_list';
+
+    loadSelectData('/factories/' + gon.fct + '/sign_logs/query_device')
     fct_date_event(table, url)
     
   }
