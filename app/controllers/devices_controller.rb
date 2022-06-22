@@ -125,7 +125,8 @@ class DevicesController < ApplicationController
         end
       end
 
-      device = @factory.devices.where(:idno => idno).first
+      #device = @factory.devices.where(:idno => idno).first
+      device = @factory.devices.where(:mdno => mdno, :unit => unit, :supplier => supplier).first
       if device
         next 
       else

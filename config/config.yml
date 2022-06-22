@@ -388,6 +388,11 @@ defaults:
     idfront: 身份证正面
     idback: 身份证反面
     avatar: 一寸照片
+  sign_logs: &41
+    label: 签到记录
+    sign_date: 签到日期
+    wx_user_id: 签到审核人
+    device_id: 站点
 development:
   notices: *1
   reports: *2
@@ -429,11 +434,6 @@ development:
   gdteminals: *38
   gdtraces: *39
   workers: *40
-  sign_logs:
-    label: 签到记录
-    sign_date: 签到日期
-    wx_user_id: 签到审核人
-    device_id: 站点
 test: 
 production:
   notices: *1
@@ -476,3 +476,4 @@ production:
   gdteminals: *38
   gdtraces: *39
   workers: *40
+  sign_logs: *41

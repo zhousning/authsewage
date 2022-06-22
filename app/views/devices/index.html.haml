@@ -10,17 +10,18 @@
           = fa_icon "list", text: t(controller_name + "." + action_name + '.title')
 
           
-          = link_to xls_download_factory_devices_path(idencode(@factory.id)), :class => "button button-royal pull-right button-small mr-1" do
-            下载表格模板
-          
+          -#
+            = link_to xls_download_factory_devices_path(idencode(@factory.id)), :class => "button button-royal pull-right button-small mr-1" do
+              下载表格模板
+            
 
-          
-          %button.button.button-caution.button-small.pull-right.mr-1{"data-target" => "#exampleModal", "data-toggle" => "modal", :type => "button"}
-            上传表格
-          
+            
+            %button.button.button-caution.button-small.pull-right.mr-1{"data-target" => "#exampleModal", "data-toggle" => "modal", :type => "button"}
+              上传表格
+            
 
-          = link_to "/factories/#{idencode(@factory.id)}/#{controller_name}/new", :class => "button  button-small pull-right button-primary mr-1" do
-            = fa_icon "plus", text: Setting.systems.btn_new, right: false 
+            = link_to "/factories/#{idencode(@factory.id)}/#{controller_name}/new", :class => "button  button-small pull-right button-primary mr-1" do
+              = fa_icon "plus", text: Setting.systems.btn_new, right: false 
           -#
             %button.button.button-primary.button-small.pull-right.mr-1{"data-target" => "#newModal", "data-toggle" => "modal", :type => "button"}
             = fa_icon "plus", text: Setting.systems.btn_new, right: false 
@@ -35,7 +36,8 @@
                   %tr
                     %th{:scope => "col", :'data-field' => "id"} #
                   
-                    %th{:scope => "col", :'data-field' => "idno"}
+                    -#
+                      %th{:scope => "col", :'data-field' => "idno"}
                       = Setting.devices.idno
                     %th{:scope => "col", :'data-field' => "name"}
                       = Setting.devices.name
@@ -45,13 +47,15 @@
                       = Setting.devices.unit
                     %th{:scope => "col", :'data-field' => "supplier"}
                       = Setting.devices.supplier
-                    %th{:scope => "col", :'data-field' => "state"}
+                    -#
+                      %th{:scope => "col", :'data-field' => "state"}
                       = Setting.devices.state
                     %th{:scope => "col", :'data-field' => "pos"}
                       = Setting.devices.pos
                     %th{:scope => "col", :'data-field' => "pos_no"}
                       = Setting.devices.pos_no
-                    %th{:scope => "col", :'data-field' => "search"}
+                    -#
+                      %th{:scope => "col", :'data-field' => "search"}
       = render "layouts/bootstrap/card"
 
 
