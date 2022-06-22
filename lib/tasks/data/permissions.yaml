@@ -20,7 +20,7 @@
   actions: [index]
 -
   controller: grp_devices_controller
-  actions: [index, query_all]
+  actions: [index, edit, update, destroy, query_all, xls_download, parse_excel]
 -
   controller: grp_workers_controller
   actions: [index, query_all, query_info, signlogs]

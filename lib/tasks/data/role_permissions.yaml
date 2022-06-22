@@ -39,7 +39,7 @@
   permissions: 
     -
       controller: grp_devices_controller
-      actions: [index, query_all]
+      actions: [index, edit, update, destroy, query_all, xls_download, parse_excel]
 - 
   role_name: 集团-签到负责人
   level: 1

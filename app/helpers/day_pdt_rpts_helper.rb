@@ -9,6 +9,15 @@ module DayPdtRptsHelper
     raw(str)
   end
 
+  def options_for_factories
+    str = ""
+    Factory.all.each do |f|
+      str += "<option value='" + idencode(f.id).to_s + "'>" + f.name + "</option>"
+    end
+
+    raw(str)
+  end
+
   def options_for_quotas
     str = ""
     quotas = Quota.all

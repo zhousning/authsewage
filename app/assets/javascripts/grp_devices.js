@@ -10,6 +10,7 @@ function getGrpDeviceItems(method) {
   $.get(url).done(function (objs) {
     var data = [];
     $.each(objs, function(index, item) {
+      var search = "<a class='button button-royal button-small mr-3' href='/grp_devices/" + item.id + "/edit'>编辑</a><a data-confirm='确定删除吗?' class='button button-caution button-small' rel='nofollow' data-method='delete' href='/grp_devices/" + item.id + "'>删除</a>"
       data.push({
         'id' : index + 1,
         'fct' : item.fct,
@@ -20,7 +21,8 @@ function getGrpDeviceItems(method) {
         'pos' : item.pos,
         'supplier' : item.supplier,
         'state' : item.state,
-        'pos_no' : item.pos_no
+        'pos_no' : item.pos_no,
+        'search' : search 
       });
     });
     $table.bootstrapTable('load', data);

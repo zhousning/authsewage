@@ -52,9 +52,9 @@ Rails.application.routes.draw do
   resources :selectors
 
   resources :factories, :only => [] do
-    resources :devices do
-      post :parse_excel, :on => :collection
-      get :xls_download, :on => :collection
+    resources :devices, :only => [:index]  do
+      #post :parse_excel, :on => :collection
+      #get :xls_download, :on => :collection
       get :query_all, :on => :collection
     end
     resources :inspectors, :only => [:index] do
@@ -80,9 +80,11 @@ Rails.application.routes.draw do
 
   resources :grp_inspectors, :only => [:index]
 
-  resources :grp_devices, :only => [:index] do
+  resources :grp_devices, :only => [:index, :edit, :update, :destroy] do
     collection do
       get 'query_all'
+      post 'parse_excel'
+      get 'xls_download'
     end
   end
 

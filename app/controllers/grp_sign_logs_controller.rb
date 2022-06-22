@@ -13,7 +13,7 @@ class GrpSignLogsController < ApplicationController
     @devices.each do |device|
       result << {
         id: idencode(device.id),
-        text: device.name
+        text: device.mdno + ' - ' + device.unit + ' - ' + device.name
       }
     end
     obj = {

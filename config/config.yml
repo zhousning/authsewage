@@ -434,6 +434,7 @@ development:
   gdteminals: *38
   gdtraces: *39
   workers: *40
+  sign_logs: *41
 test: 
 production:
   notices: *1
