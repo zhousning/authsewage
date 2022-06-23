@@ -10,24 +10,27 @@ class WxTasksController < ApplicationController
 
   def query_all 
     wxuser = WxUser.find_by(:openid => params[:id])
-    items = wxuser.devices
-   
     obj = []
-    items.each do |item|
-      inspectors = SignLog.where(:sign_date => Date.today, :wx_user_id => wxuser.id, :device_id => item.id)
-      
-      arr = []
-      inspectors.each do |ispt|
-        arr << ispt.worker.name
+    if wxuser.state == Setting.states.completed
+      items = wxuser.devices
+   
+      items.each do |item|
+        inspectors = SignLog.where(:sign_date => Date.today, :wx_user_id => wxuser.id, :device_id => item.id)
+        
+        arr = []
+        inspectors.each do |ispt|
+          arr << ispt.worker.name
+        end
+        obj << {
+          :task_id => item.id,
+          :task_date => Date.today.strftime('%Y-%m-%d'),
+          :desc => item.name,
+          :inspectors => arr
+        
+        }
       end
-      obj << {
-        :task_id => item.id,
-        :task_date => Date.today.strftime('%Y-%m-%d'),
-        :desc => item.name,
-        :inspectors => arr
-      
-      }
     end
+
     respond_to do |f|
       f.json{ render :json => obj.to_json}
     end
@@ -116,12 +119,18 @@ class WxTasksController < ApplicationController
     adress = params[:question]
     imgs = params[:imgs].join(',')
     
+    if @wxuser.state != Setting.states.completed
+      respond_to do |f|
+        f.json{ render :json => {:state => 'error'}.to_json}
+      end
+      return
+    end
+
     if idno.blank? || phone.blank? || name.blank?
       respond_to do |f|
         f.json{ render :json => {:state => 'error'}.to_json}
       end
     else
-      wxuser = WxUser.find_by(:openid => params[:id])
       worker = Worker.where(:idno => idno).first
       if !worker.nil?
         if worker.state == Setting.states.completed
@@ -140,8 +149,8 @@ class WxTasksController < ApplicationController
           end
         end
       else
-        factory = wxuser.factories.first.id
-        @worker = Worker.new(:factory => factory, :wx_inviter => wxuser.id, :name => name, :idno => idno, :phone => phone, :gender => gender, :adress => adress, :img => imgs)
+        factory = @wxuser.factories.first.id
+        @worker = Worker.new(:factory => factory, :wx_inviter => @wxuser.id, :name => name, :idno => idno, :phone => phone, :gender => gender, :adress => adress, :img => imgs)
 
         if @worker.save
           respond_to do |f|

@@ -98,6 +98,7 @@ Rails.application.routes.draw do
     collection do
       post 'get_userid'
       get 'fcts'
+      get 'areas'
       get 'streets'
       get 'sites'
       get 'status'

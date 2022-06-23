@@ -49,12 +49,6 @@ class WxUsersController < ApplicationController
   end
 
   def fcts
-    device_objs = []
-    devices = Device.select('mdno').uniq
-    devices.each do |device|
-      device_objs << device.mdno
-    end
-
     factories = Factory.all
     fct_objs = []
     factories.each do |fct|
@@ -62,7 +56,20 @@ class WxUsersController < ApplicationController
     end
 
     respond_to do |f|
-      f.json { render :json => {fcts: fct_objs, devices: device_objs}.to_json }
+      f.json { render :json => {fcts: fct_objs}.to_json }
+    end
+  end
+
+  def areas
+    @factory = Factory.find_by_name(params[:fct])
+    device_objs = []
+    devices = @factory.devices.select('mdno').uniq
+    devices.each do |device|
+      device_objs << device.mdno
+    end
+
+    respond_to do |f|
+      f.json { render :json => {areas: device_objs}.to_json }
     end
   end
 
