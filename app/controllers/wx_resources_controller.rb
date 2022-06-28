@@ -3,6 +3,14 @@ class WxResourcesController < ApplicationController
   before_filter :wxuser_exist?
 
   def img_upload
+
+    if @wxuser.state != Setting.states.completed
+      respond_to do |f|
+        f.json{ render :json => {:state => 'error', :url => ''}.to_json}
+      end
+      return
+    end
+
     uploader = WxEnclosureUploader.new
     if uploader.store!(params[:file])
       path = uploader.url
