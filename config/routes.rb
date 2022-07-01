@@ -53,8 +53,6 @@ Rails.application.routes.draw do
 
   resources :factories, :only => [] do
     resources :devices, :only => [:index]  do
-      #post :parse_excel, :on => :collection
-      #get :xls_download, :on => :collection
       get :query_all, :on => :collection
     end
     resources :inspectors, :only => [:index] do
