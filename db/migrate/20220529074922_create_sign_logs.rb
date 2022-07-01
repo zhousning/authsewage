@@ -15,6 +15,9 @@ class CreateSignLogs < ActiveRecord::Migration
       t.text :avatar_base
     
 
+      t.string :longitude,  null: false, default: Setting.systems.default_str
+
+      t.string :latitude,  null: false, default: Setting.systems.default_str
     
 
     

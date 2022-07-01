@@ -393,6 +393,8 @@ defaults:
     sign_date: 签到日期
     wx_user_id: 签到审核人
     device_id: 站点
+    longitude: 经度
+    latitude: 纬度
 development:
   notices: *1
   reports: *2

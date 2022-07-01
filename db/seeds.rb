@@ -24,12 +24,18 @@ AdminUser.create!(:phone => Setting.admins.phone, :email => Setting.admins.email
 
 ###区分厂区和集团用户是为了sidebar显示
 @role_fct = Role.where(:name => Setting.roles.role_fct).first
+#@role_cpy = Role.where(:name => Setting.roles.role_cpy).first
 @role_grp = Role.where(:name => Setting.roles.role_grp).first
 
 @role_device    = Role.where(:name => Setting.roles.role_device).first
 @role_inspector = Role.where(:name => Setting.roles.role_inspector).first
 @role_worker    = Role.where(:name => Setting.roles.role_worker).first
 @role_sign_log  = Role.where(:name => Setting.roles.role_sign_log).first
+
+#@role_cpy_device    = Role.where(:name => Setting.roles.role_cpy_device).first
+#@role_cpy_inspector = Role.where(:name => Setting.roles.role_cpy_inspector).first
+#@role_cpy_worker    = Role.where(:name => Setting.roles.role_cpy_worker).first
+#@role_cpy_sign_log  = Role.where(:name => Setting.roles.role_cpy_sign_log).first
 
 @role_grp_device    = Role.where(:name => Setting.roles.role_grp_device).first
 @role_grp_inspector = Role.where(:name => Setting.roles.role_grp_inspector).first
@@ -38,6 +44,8 @@ AdminUser.create!(:phone => Setting.admins.phone, :email => Setting.admins.email
 
 ##厂区管理者
 @fctmgn = [@role_fct, @role_worker, @role_device, @role_inspector, @role_sign_log]
+#公司
+#@cpy_mgn = [@role_cpy, @role_cpy_worker, @role_cpy_device, @role_cpy_inspector, @role_cpy_sign_log]
 ##集团管理者
 @grp_mgn = [@role_grp, @role_grp_worker, @role_grp_device, @role_grp_inspector, @role_grp_sign_log]
 

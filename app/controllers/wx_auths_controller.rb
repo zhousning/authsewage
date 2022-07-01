@@ -6,27 +6,22 @@ class WxAuthsController < ApplicationController
   def auth_process
     body = search_face(params[:photo])
     @device = @wxuser.devices.find(params[:equipment])
+    longitude = params[:longitude]
+    latitude = params[:latitude]
 
-    puts body
     if body["error_code"] == 0
       users = body['result']['user_list']
       user = users[0]
       worker = Worker.find_by_idno(user["user_id"])
-      sign_log = worker.sign_logs.where(:sign_date => Date.today, :device_id => @device.id).first 
-      if sign_log.nil?
-        @sign_log = SignLog.new(:sign_date => Date.today, :wx_user_id => @wxuser.id, :device_id => @device.id, :worker => worker, :avatar => params[:photo]) 
-        if @sign_log.save
-          respond_to do |f|
-            f.json{ render :json => {:state => "success", :name => worker.name}.to_json}
-          end
-        else
-          respond_to do |f|
-            f.json{ render :json => {:state => "error"}.to_json}
-          end
+      @sign_log = SignLog.new(:sign_date => Date.today, :wx_user_id => @wxuser.id, :device_id => @device.id, :worker => worker, :avatar => params[:photo], :longitude => longitude, :latitude => latitude) 
+ 
+      if @sign_log.save
+        respond_to do |f|
+          f.json{ render :json => {:state => "success", :name => worker.name}.to_json}
         end
       else
         respond_to do |f|
-          f.json{ render :json => {:state => "success", :name => worker.name}.to_json}
+          f.json{ render :json => {:state => "error"}.to_json}
         end
       end
     else
@@ -37,6 +32,24 @@ class WxAuthsController < ApplicationController
   end
 end
 
+#sign_log = worker.sign_logs.where(:sign_date => Date.today, :device_id => @device.id).first 
+#if sign_log.nil?
+#  @sign_log = SignLog.new(:sign_date => Date.today, :wx_user_id => @wxuser.id, :device_id => @device.id, :worker => worker, :avatar => params[:photo], :longitude => longitude, :latitude => latitude) 
+#
+#  if @sign_log.save
+#    respond_to do |f|
+#      f.json{ render :json => {:state => "success", :name => worker.name}.to_json}
+#    end
+#  else
+#    respond_to do |f|
+#      f.json{ render :json => {:state => "error"}.to_json}
+#    end
+#  end
+#else
+#  respond_to do |f|
+#    f.json{ render :json => {:state => "success", :name => worker.name}.to_json}
+#  end
+#end
 
 #阿里云认证方法暂时不用
 #require 'aliyunsdkcore'
