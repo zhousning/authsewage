@@ -17,16 +17,23 @@ class WxTasksController < ApplicationController
       items.each do |item|
         inspectors = SignLog.where(:sign_date => Date.today, :wx_user_id => wxuser.id, :device_id => item.id)
         
-        arr = []
+        
+        #arr = []
+        #arr << ispt.worker.name
+        hash = Hash.new
         inspectors.each do |ispt|
-          arr << ispt.worker.name
+          time = ispt.created_at.strftime('%H:%M')
+          if hash[ispt.worker.name].nil?
+            hash[ispt.worker.name] = ':' + time 
+          else
+            hash[ispt.worker.name] += "-" + time
+          end
         end
         obj << {
           :task_id => item.id,
           :task_date => Date.today.strftime('%Y-%m-%d'),
           :desc => item.name,
-          :inspectors => arr
-        
+          :inspectors => hash
         }
       end
     end
