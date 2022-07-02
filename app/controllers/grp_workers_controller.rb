@@ -50,6 +50,7 @@ class GrpWorkersController < ApplicationController
         :time => item.created_at.strftime('%Y-%m-%d %H:%M:%S'),
         :fzr => WxUser.find(item.wx_user_id).name,
         :zd => Device.find(item.device_id).name,
+        :jwd => item.longitude + ', ' + item.latitude,
         :img => item.avatar_url
       }
     end

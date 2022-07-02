@@ -28,6 +28,8 @@ function get_sign_logs(method) {
         'wx_user_id' : item.wx_user_id,
          
         'device_id' : item.device_id,
+
+        'position' : position,
         
         'button' : button 
       });

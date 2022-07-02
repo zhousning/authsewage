@@ -8,7 +8,7 @@ $(".grp_workers").ready(function() {
       var url = "/grp_workers/" + data_id + "/signlogs";
       $.get(url).done(function (data) {
         var emq = data;
-        var emq_table = '<tr><th></th><th>时间</th><th>负责人</th><th>站点</th><th></th></tr>';
+        var emq_table = '<tr><th></th><th>时间</th><th>负责人</th><th>站点</th><th>经纬度</th><th></th></tr>';
         for (var i=0; i<emq.length; i++) {
           var j = i + 1
           emq_table += '<tr>'; 
@@ -16,6 +16,7 @@ $(".grp_workers").ready(function() {
           emq_table += "<td>" + emq[i].time + "</td>"; 
           emq_table += "<td>" + emq[i].fzr + "</td>"; 
           emq_table += "<td>" + emq[i].zd + "</td>"; 
+          emq_table += "<td>" + emq[i].jwd + "</td>"; 
           emq_table += "<td>" + "<img class='h-100px' src='" + emq[i].img + "'/>" + "</td>"; 
           emq_table += '</tr>'; 
         }

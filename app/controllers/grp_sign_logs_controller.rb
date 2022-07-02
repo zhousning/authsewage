@@ -44,6 +44,8 @@ class GrpSignLogsController < ApplicationController
        
         :device_id => Device.find(item.device_id).name,
 
+        :position => item.longitude + ', ' + item.latitude,
+
         :avatar => "<img class='h-100px' src='#{item.avatar_url}' />"
       
       }

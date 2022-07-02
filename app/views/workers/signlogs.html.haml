@@ -27,6 +27,9 @@
                   
                     %th{:scope => "col", :'data-field' => "device_id"}
                       = Setting.sign_logs.device_id
+
+                    %th{:scope => "col", :'data-field' => "position"}
+                      经纬度
                   
                     %th{:scope => "col", :'data-field' => "avatar"}
                 %tbody
@@ -41,6 +44,8 @@
                         = WxUser.find(sign_log.wx_user_id).name
                       %td
                         = Device.find(sign_log.device_id).name
+                      %td
+                        = sign_log.longitude + ', ' + sign_log.latitude
                       %td
                         = image_tag sign_log.avatar_url, :class => "h-100px"
       = render "layouts/bootstrap/card"
