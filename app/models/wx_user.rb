@@ -46,4 +46,10 @@ class WxUser < ActiveRecord::Base
     update_attribute :state, Setting.states.completed
   end
 
+  before_save :store_unique_number
+  def store_unique_number
+    if self.number == ""
+      self.number = Time.now.to_i.to_s + "%02d" % [rand(100)]
+    end
+  end
 end

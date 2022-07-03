@@ -12,6 +12,7 @@ class CreateWxUsers < ActiveRecord::Migration
       t.string :province, null: false, default: ""
       t.string :country, null: false, default: ""
       t.string :language, null: false, default: ""
+      t.string :number, null: false, default: ""
 
       t.string :state, null: false, default: Setting.states.ongoing 
       t.string :task_state, null: false, default: Setting.states.pending

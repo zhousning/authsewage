@@ -3,6 +3,9 @@
   role_name: 厂区用户
   level: 1
 - 
+  role_name: 微信用户
+  level: 1
+- 
   role_name: 集团用户
   level: 1
 - 
@@ -60,4 +63,25 @@
   permissions: 
     -
       controller: grp_sign_logs_controller
+      actions: [index, query_list, query_device]
+- 
+  role_name: 微信-施工站点
+  level: 1
+  permissions: 
+    -
+      controller: wx_devices_controller
+      actions: [index, query_all]
+- 
+  role_name: 微信-工人管理
+  level: 1
+  permissions: 
+    -
+      controller: wx_workers_controller
+      actions: [index, query_all, query_info, signlogs]
+- 
+  role_name: 微信-签到记录
+  level: 1
+  permissions: 
+    -
+      controller: wx_sign_logs_controller
       actions: [index, query_list, query_device]

@@ -24,3 +24,12 @@
 -
   controller: grp_workers_controller
   actions: [index, query_all, query_info, signlogs]
+-
+  controller: wx_sign_logs_controller
+  actions: [index, query_list, query_device]
+-
+  controller: wx_devices_controller
+  actions: [index, query_all]
+-
+  controller: wx_workers_controller
+  actions: [index, query_all, query_info, signlogs]

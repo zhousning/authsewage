@@ -71,6 +71,21 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :wx_sign_logs, :only => [:index] do
+    get :query_list, :on => :collection
+    get :query_device, :on => :collection
+  end
+
+  resources :wx_devices, :only => [:index] do
+    get :query_all, :on => :collection
+  end
+
+  resources :wx_workers, :only => [:index] do
+    get :query_all, :on => :collection
+    get :query_info, :on => :member
+    get :signlogs, :on => :member
+  end
+
   resources :grp_sign_logs, :only => [:index] do
     get :query_list, :on => :collection
     get :query_device, :on => :collection
@@ -99,6 +114,7 @@ Rails.application.routes.draw do
       get 'areas'
       get 'streets'
       get 'sites'
+      get 'identity'
       get 'status'
       post 'set_fct'
     end
