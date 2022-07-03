@@ -29,8 +29,9 @@ class WxWorkersController < ApplicationController
   end
    
   def query_info 
-    @wxuser = WxUser.find_by_number(current_user.phone)
-    @worker = Worker.find_by_wx_inviter(@wxuser.id)
+    #@wxuser = WxUser.find_by_number(current_user.phone)
+    #@worker = Worker.find_by_wx_inviter(@wxuser.id)
+    @worker = Worker.find(iddecode(params[:id]))
    
     info = [@worker.name, @worker.idno, @worker.phone]
     imgs = []
@@ -44,8 +45,7 @@ class WxWorkersController < ApplicationController
    
    
   def signlogs
-    @wxuser = WxUser.find_by_number(current_user.phone)
-    @worker = Worker.find_by_wx_inviter(@wxuser.id)
+    @worker = Worker.find(iddecode(params[:id]))
     @sign_logs = @worker.sign_logs.order('created_at DESC') 
     obj = []
     @sign_logs.each do |item|
