@@ -47,6 +47,7 @@ module BaiduFace
     params = {
       image: image_to_base64(file),
       image_type: 'BASE64',
+      match_threshold: 80,
       group_id_list: Setting.systems.face_group,
     }
     sleep(2)
