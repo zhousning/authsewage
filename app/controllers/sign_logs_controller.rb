@@ -41,6 +41,8 @@ class SignLogsController < ApplicationController
         #:id => idencode(item.id),
         :id => index + 1, 
 
+        :name => item.worker.name,
+
         :sign_date => item.created_at.strftime('%Y-%m-%d %H:%M:%S'),
        
         :wx_user_id => WxUser.find(item.wx_user_id).name,

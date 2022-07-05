@@ -396,7 +396,7 @@ defaults:
   sign_logs: &41
     label: 签到记录
     sign_date: 签到日期
-    wx_user_id: 签到审核人
+    wx_user_id: 签到负责人
     device_id: 站点
     longitude: 经度
     latitude: 纬度
