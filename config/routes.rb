@@ -107,6 +107,11 @@ Rails.application.routes.draw do
     get :signlogs, :on => :member
   end
 
+  resources :grp_static, :only => [] do
+    get :query_device, :on => :collection
+    get :query_by_area, :on => :collection
+  end
+
   resources :wx_users, only: [:update] do
     collection do
       post 'get_userid'
