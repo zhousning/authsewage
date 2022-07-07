@@ -8,6 +8,13 @@
 - 
   role_name: 集团用户
   level: 1
+  permissions: 
+    -
+      controller: grp_static_controller
+      actions: [query_device, query_by_area]
+    -
+      controller: controls_controller
+      actions: [index]
 - 
   role_name: 厂区-施工站点
   level: 1

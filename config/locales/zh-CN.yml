@@ -649,3 +649,8 @@ zh-CN:
       title: 微信-工人审核不通过
     signlogs:
       title: 微信-工人签到记录
+  grp_static:
+    query_device:
+      title: 集团统计-区查询
+    query_by_area:
+      title: 集团统计-按区统计人数

@@ -1,10 +1,10 @@
 class ControlsController < ApplicationController
-  layout "application_control_map"
+  layout "application_control"
   before_filter :authenticate_user!
-  #authorize_resource
+  authorize_resource
 
   def index
-    gon.center = [116.605763, 35.444226] 
+    #gon.center = [116.605763, 35.444226] 
     #@factorie = current_user.factories.first
     #arr = [@factorie.lnt, @factorie.lat]
     #gon.center = arr

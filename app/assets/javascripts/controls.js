@@ -12,7 +12,7 @@ $(".controls.index").ready(function() {
       request_params = {start: start, fct: fct}
       $.get(url, request_params).done(function (obj) {
         console.log(obj);
-        var html = '<caption>今日签到人数</caption>'; 
+        var html = '<caption>签到人数</caption>'; 
         $.each(obj, function(town, value) {
           var town_count = 0;
           var country_html = ''
